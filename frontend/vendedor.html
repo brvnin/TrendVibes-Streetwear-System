@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -6,6 +6,7 @@
     <title>Painel do Vendedor | TrendVibes</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="config.js"></script>
 </head>
 <body class="dark-grid-bg">
     
@@ -213,7 +214,7 @@
         const dadosUsuario = JSON.parse(usuarioSalvo);
 
         try {
-            const resposta = await fetch('http://localhost:5208/api/vendas', {
+            const resposta = await fetch(`${window.API_BASE_URL}/api/vendas`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -247,7 +248,7 @@
     const dadosUsuario = JSON.parse(usuarioSalvo);
 
     try {
-        const resposta = await fetch(`http://localhost:5208/api/vendas/${dadosUsuario.colaboradorId}`);
+        const resposta = await fetch(`${window.API_BASE_URL}/api/vendas/${dadosUsuario.colaboradorId}`);
         const historico = await resposta.json();
 
         const container = document.getElementById('listaHistoricoVendas');
@@ -293,7 +294,7 @@
     const dadosUsuario = JSON.parse(usuarioSalvo);
 
     try {
-        const resposta = await fetch(`http://localhost:5208/api/vendas/resumo/${dadosUsuario.colaboradorId}`);
+        const resposta = await fetch(`${window.API_BASE_URL}/api/vendas/resumo/${dadosUsuario.colaboradorId}`);
         const resumo = await resposta.json();
 
         if (resposta.ok && resumo.sucesso) {
@@ -363,7 +364,7 @@
 
             try {
                 // 1. Atualiza no Banco de Dados (C#)
-                await fetch('http://localhost:5208/api/turno', {
+                await fetch(`${window.API_BASE_URL}/api/turno`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ colaboradorId: user.colaboradorId, status: novoStatus })
@@ -402,7 +403,7 @@
             if (!user) return;
 
             try {
-                const res = await fetch(`http://localhost:5208/api/ticket/${user.colaboradorId}`);
+                const res = await fetch(`${window.API_BASE_URL}/api/ticket/${user.colaboradorId}`);
                 const dados = await res.json();
                 
                 if (dados.sucesso) {
@@ -427,3 +428,4 @@
 </script>
 </body>
 </html>
+

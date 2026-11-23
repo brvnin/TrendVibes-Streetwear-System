@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -6,6 +6,7 @@
     <title>Painel do Estoquista | TrendVibes</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="config.js"></script>
 </head>
 <body class="dark-grid-bg">
 
@@ -140,7 +141,7 @@
     // ==========================================
     async function carregarTarefas() {
         try {
-            const resposta = await fetch('http://localhost:5208/api/tarefas');
+            const resposta = await fetch(`${window.API_BASE_URL}/api/tarefas`);
             const tarefas = await resposta.json();
             
             const container = document.getElementById('lista-tarefas');
@@ -183,7 +184,7 @@
             
             const usuarioSalvo = JSON.parse(localStorage.getItem('usuarioLogado'));
             
-            await fetch(`http://localhost:5208/api/tarefas/${id}`, {
+            await fetch(`${window.API_BASE_URL}/api/tarefas/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
@@ -213,7 +214,7 @@
 
             try {
                 // 1. Atualiza no Banco de Dados (C#)
-                await fetch('http://localhost:5208/api/turno', {
+                await fetch(`${window.API_BASE_URL}/api/turno`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ colaboradorId: user.colaboradorId, status: novoStatus })
@@ -254,3 +255,4 @@
 </script>
 </body>
 </html>
+

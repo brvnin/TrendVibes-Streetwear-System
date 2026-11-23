@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -6,6 +6,7 @@
     <title>Painel Root (Gerência) | TrendVibes</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="config.js"></script>
 </head>
 <body class="dark-grid-bg">
 
@@ -320,7 +321,7 @@
 
             try {
                 // 1. Atualiza no Banco de Dados (C#)
-                await fetch('http://localhost:5208/api/turno', {
+                await fetch(`${window.API_BASE_URL}/api/turno`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ colaboradorId: user.colaboradorId, status: novoStatus })
@@ -355,7 +356,7 @@
         // ==========================================
         async function carregarListaEquipe() {
             try {
-                const res = await fetch('http://localhost:5208/api/equipe/status');
+                const res = await fetch(`${window.API_BASE_URL}/api/equipe/status`);
                 const equipe = await res.json();
                 
                 const statsContainer = document.getElementById('statsEquipeCards');
@@ -418,7 +419,7 @@
             const dadosUsuario = JSON.parse(usuarioSalvo);
 
             try {
-                const resposta = await fetch('http://localhost:5208/api/vendas', {
+                const resposta = await fetch(`${window.API_BASE_URL}/api/vendas`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -447,7 +448,7 @@
             const dadosUsuario = JSON.parse(usuarioSalvo);
 
             try {
-                const resposta = await fetch(`http://localhost:5208/api/vendas/${dadosUsuario.colaboradorId}`);
+                const resposta = await fetch(`${window.API_BASE_URL}/api/vendas/${dadosUsuario.colaboradorId}`);
                 const historico = await resposta.json();
 
                 const container = document.getElementById('listaHistoricoVendasGerente');
@@ -491,7 +492,7 @@
             
             try {
                 // A API puxa a meta definida pelo RH e as vendas gerais
-                const res = await fetch(`http://localhost:5208/api/vendas/resumo/${user.colaboradorId}`);
+                const res = await fetch(`${window.API_BASE_URL}/api/vendas/resumo/${user.colaboradorId}`);
                 const data = await res.json();
                 
                 if (data.sucesso) {
@@ -539,7 +540,7 @@
                 return;
             }
 
-            const res = await fetch('http://localhost:5208/api/metas', {
+            const res = await fetch(`${window.API_BASE_URL}/api/metas`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dados)
@@ -556,7 +557,7 @@
 
         async function carregarProgressoEquipe() {
             try {
-                const res = await fetch('http://localhost:5208/api/vendas/equipe/resumo');
+                const res = await fetch(`${window.API_BASE_URL}/api/vendas/equipe/resumo`);
                 const equipe = await res.json();
                 const container = document.getElementById('listaProgressoEquipe');
                 if(!container) return;
@@ -616,7 +617,7 @@
         // ==========================================
         async function carregarVendedoresDropdown() {
             try {
-                const res = await fetch('http://localhost:5208/api/colaboradores/simples');
+                const res = await fetch(`${window.API_BASE_URL}/api/colaboradores/simples`);
                 const colaboradores = await res.json();
                 
                 const selectVendedor = document.getElementById('metaColaboradorId');
@@ -649,7 +650,7 @@
             }
 
             try {
-                const res = await fetch('http://localhost:5208/api/tarefas', {
+                const res = await fetch(`${window.API_BASE_URL}/api/tarefas`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -678,7 +679,7 @@
         // ==========================================
         async function carregarAcompanhamentoTarefas() {
             try {
-                const res = await fetch('http://localhost:5208/api/tarefas');
+                const res = await fetch(`${window.API_BASE_URL}/api/tarefas`);
                 const tarefas = await res.json();
                 const container = document.getElementById('listaAcompanhamentoTarefas');
                 if(!container) return;
@@ -718,7 +719,7 @@
             if (!user) return;
 
             try {
-                const res = await fetch(`http://localhost:5208/api/ticket/${user.colaboradorId}`);
+                const res = await fetch(`${window.API_BASE_URL}/api/ticket/${user.colaboradorId}`);
                 const dados = await res.json();
                 
                 if (dados.sucesso) {
@@ -748,3 +749,4 @@
     </script>
 </body>
 </html>
+

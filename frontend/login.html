@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -6,6 +6,7 @@
     <title>Login Operacional | TrendVibes</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="config.js"></script>
 </head>
 <body class="dark-grid-bg">
 
@@ -65,6 +66,11 @@
                             <button type="button" class="btn-login-neo" onclick="realizarLogin()">ENTRAR NO SISTEMA</button>
                         </div>
 
+                        <p style="margin-top: 15px; font-size: 0.75rem; font-family: var(--font-mono); color: #888; text-align: center;">
+                            API: <strong id="api-url-display" style="color: #FACC15;"></strong> 
+                            <a href="javascript:void(0)" onclick="alterarServidor()" style="color: #fff; text-decoration: underline; margin-left: 6px;">[⚙️ Alterar]</a>
+                        </p>
+
                     </form>
                 </div>
 
@@ -110,7 +116,21 @@
 
     <script src="acessibilidade.js"></script>
     
-<script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const display = document.getElementById('api-url-display');
+            if (display) display.textContent = window.API_BASE_URL;
+        });
+
+        function alterarServidor() {
+            const atual = localStorage.getItem('TRENDVIBES_API_URL') || window.API_BASE_URL;
+            const nova = prompt("Digite a URL base da API do TrendVibes no Render:\nExemplo: https://trendvibes-api.onrender.com", atual);
+            if (nova !== null && nova.trim() !== "") {
+                localStorage.setItem('TRENDVIBES_API_URL', nova.trim());
+                location.reload();
+            }
+        }
+
         async function realizarLogin() {
             const emailDigitado = document.getElementById('email').value;
             const senhaDigitada = document.getElementById('senha').value;
@@ -122,7 +142,7 @@
             }
 
             try {
-                const resposta = await fetch('http://localhost:5208/api/login', {
+                const resposta = await fetch(`${window.API_BASE_URL}/api/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -150,10 +170,11 @@
                     alert(dados.mensagem || "Credenciais ou cargo inválidos.");
                 }
             } catch (erro) {
-                alert("Erro ao conectar com o servidor. Verifique se o terminal do C# está rodando!");
+                alert("Erro ao conectar com o servidor da API (" + window.API_BASE_URL + ").\n\nVerifique se o Web Service no Render já terminou o deploy ou clique em [Alterar] para conferir o link!");
                 console.error(erro);
             }
         }
     </script>
 </body>
 </html>
+

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -6,6 +6,7 @@
     <title>Painel Root (RH) | TrendVibes</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="config.js"></script>
 </head>
 <body class="dark-grid-bg">
 
@@ -446,7 +447,7 @@
 
             try {
                 // 1. Atualiza no Banco de Dados (C#)
-                await fetch('http://localhost:5208/api/turno', {
+                await fetch(`${window.API_BASE_URL}/api/turno`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ colaboradorId: user.colaboradorId, status: novoStatus })
@@ -509,7 +510,7 @@
             };
 
             try {
-                const res = await fetch('http://localhost:5208/api/metas', {
+                const res = await fetch(`${window.API_BASE_URL}/api/metas`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(dados)
@@ -532,7 +533,7 @@
         // ==========================================
         async function carregarColaboradoresRh() {
             try {
-                const res = await fetch('http://localhost:5208/api/colaboradores/simples');
+                const res = await fetch(`${window.API_BASE_URL}/api/colaboradores/simples`);
                 const colaboradores = await res.json();
                 
                 const selectHolerite = document.getElementById('selectColaboradorRh');
@@ -572,7 +573,7 @@
 
             try {
                 // Puxa a matemática exata que fizemos no C#
-                const res = await fetch(`http://localhost:5208/api/holerite/${idColaborador}`);
+                const res = await fetch(`${window.API_BASE_URL}/api/holerite/${idColaborador}`);
                 const dados = await res.json();
 
                 if (dados.sucesso) {
@@ -628,7 +629,7 @@
             }
 
             try {
-                const res = await fetch('http://localhost:5208/api/ocorrencias', {
+                const res = await fetch(`${window.API_BASE_URL}/api/ocorrencias`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -658,7 +659,7 @@
 
         async function carregarListaPessoal() {
             try {
-                const res = await fetch('http://localhost:5208/api/pessoal');
+                const res = await fetch(`${window.API_BASE_URL}/api/pessoal`);
                 listaPessoalGlobal = await res.json();
                 
                 const tbody = document.getElementById('tabelaFuncionariosCrud');
@@ -747,7 +748,7 @@
             }
 
             try {
-                const res = await fetch('http://localhost:5208/api/pessoal', {
+                const res = await fetch(`${window.API_BASE_URL}/api/pessoal`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
@@ -781,7 +782,7 @@
             if(!confirm(`Tem certeza que deseja ${acao} este colaborador?`)) return;
 
             try {
-                const res = await fetch('http://localhost:5208/api/pessoal/status', {
+                const res = await fetch(`${window.API_BASE_URL}/api/pessoal/status`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ userId: userId, novoStatus: novoStatus })
@@ -817,3 +818,4 @@
     </script>
 </body>
 </html>
+

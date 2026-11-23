@@ -60,63 +60,71 @@ app.MapGet("/api/usuarios", async (IConfiguration config) =>
 // ==========================================
 app.MapPost("/api/login", async ([FromBody] LoginRequest request, IConfiguration config) =>
 {
-    string stringConexao = config.GetConnectionString("TrendVibesDB")!;
-
-    using (var conexao = new NpgsqlConnection(stringConexao))
+    try
     {
-        await conexao.OpenAsync();
+        string stringConexao = config.GetConnectionString("TrendVibesDB")!;
 
-        string query = @"
-            SELECT u.id AS usuarioId, col.id AS colaboradorId, u.nome, u.email, c.nome AS cargo, col.turnoStatus
-            FROM usuario u
-            INNER JOIN colaborador col ON u.id = col.usuarioId
-            INNER JOIN cargo c ON col.cargoId = c.id
-            WHERE u.email = @email AND u.senha = @senha AND u.status = 'ATIVO'";
-            
-        using (var comando = new NpgsqlCommand(query, conexao))
+        using (var conexao = new NpgsqlConnection(stringConexao))
         {
-            comando.Parameters.AddWithValue("@email", request.Email);
-            comando.Parameters.AddWithValue("@senha", request.Senha);
+            await conexao.OpenAsync();
 
-            using (var reader = await comando.ExecuteReaderAsync())
+            string query = @"
+                SELECT u.id AS usuarioId, col.id AS colaboradorId, u.nome, u.email, c.nome AS cargo, col.turnoStatus
+                FROM usuario u
+                INNER JOIN colaborador col ON u.id = col.usuarioId
+                INNER JOIN cargo c ON col.cargoId = c.id
+                WHERE u.email = @email AND u.senha = @senha AND u.status = 'ATIVO'";
+                
+            using (var comando = new NpgsqlCommand(query, conexao))
             {
-                if (await reader.ReadAsync())
-                {
-                    string nomeCargo = reader.GetString(reader.GetOrdinal("cargo"));
+                comando.Parameters.AddWithValue("@email", request.Email);
+                comando.Parameters.AddWithValue("@senha", request.Senha);
 
-                    if (nomeCargo != request.Cargo)
+                using (var reader = await comando.ExecuteReaderAsync())
+                {
+                    if (await reader.ReadAsync())
                     {
-                        return Results.BadRequest(new { sucesso = false, mensagem = "O cargo selecionado não corresponde a este usuário." });
+                        string nomeCargo = reader.GetString(reader.GetOrdinal("cargo"));
+
+                        if (nomeCargo != request.Cargo)
+                        {
+                            return Results.BadRequest(new { sucesso = false, mensagem = "O cargo selecionado não corresponde a este usuário." });
+                        }
+
+                        string urlDestino = nomeCargo switch
+                        {
+                            "Vendedor" => "vendedor.html",
+                            "Estoquista" => "estoquista.html",
+                            "Gerente" => "gerente.html",
+                            "RH" => "rh.html",
+                            _ => "login.html" 
+                        };
+                        
+                        int idxTurno = reader.GetOrdinal("turnoStatus");
+                        string statusBanco = reader.IsDBNull(idxTurno) ? "AUSENTE" : reader.GetString(idxTurno);
+
+                        return Results.Ok(new { 
+                            sucesso = true, 
+                            colaboradorId = reader.GetInt32(reader.GetOrdinal("colaboradorId")),
+                            nome = reader.GetString(reader.GetOrdinal("nome")), 
+                            cargo = nomeCargo,
+                            url = urlDestino,
+                            email = reader.GetString(reader.GetOrdinal("email")),
+                            turnoStatus = statusBanco
+                        });
                     }
-
-                    string urlDestino = nomeCargo switch
+                    else
                     {
-                        "Vendedor" => "vendedor.html",
-                        "Estoquista" => "estoquista.html",
-                        "Gerente" => "gerente.html",
-                        "RH" => "rh.html",
-                        _ => "login.html" 
-                    };
-                    
-                    int idxTurno = reader.GetOrdinal("turnoStatus");
-                    string statusBanco = reader.IsDBNull(idxTurno) ? "AUSENTE" : reader.GetString(idxTurno);
-
-                    return Results.Ok(new { 
-                        sucesso = true, 
-                        colaboradorId = reader.GetInt32(reader.GetOrdinal("colaboradorId")),
-                        nome = reader.GetString(reader.GetOrdinal("nome")), 
-                        cargo = nomeCargo,
-                        url = urlDestino,
-                        email = reader.GetString(reader.GetOrdinal("email")),
-                        turnoStatus = statusBanco
-                    });
-                }
-                else
-                {
-                    return Results.BadRequest(new { sucesso = false, mensagem = "E-mail ou senha incorretos." });
+                        return Results.BadRequest(new { sucesso = false, mensagem = "E-mail ou senha incorretos." });
+                    }
                 }
             }
         }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"[ERRO LOGIN]: {ex.Message}");
+        return Results.BadRequest(new { sucesso = false, mensagem = $"Erro no banco Supabase: {ex.Message}" });
     }
 });
 
