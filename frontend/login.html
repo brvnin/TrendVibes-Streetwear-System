@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Operacional | TrendVibes</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body class="dark-grid-bg">
+
+    <!-- Header Global -->
+    <header class="main-header">
+        <div class="logo">
+            <div class="logo-icon">⚡</div>
+            <div class="logo-text">
+                <h1>TRENDVIBES</h1>
+                <span>STREETWEAR SYSTEM</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="login-wrapper">
+        <div class="neo-login-container">
+            
+            <div class="login-banner">
+                <span class="small-caps">PAINEL INTERNO</span>
+                <h2>LOGIN DO FUNCIONÁRIO</h2>
+                <p>Acesse o ambiente operacional informando suas credenciais e selecione seu cargo.</p>
+            </div>
+            
+            <div class="login-split">
+                
+                <div class="login-info-side">
+                    <span class="badge-red" style="font-family: var(--font-mono); font-size: 0.75rem; border: 2px solid #000; box-shadow: 3px 3px 0 #000; padding: 4px 10px;">🛡️ NEO-BRUTALIST ACCESS</span>
+                    <h3>PORTAL<br>OPERACIONAL</h3>
+                    <p>Entre para liberar rotinas de loja, estoque, gestão ou RH em um ambiente separado do catálogo de clientes.</p>
+                </div>
+                
+                <div class="login-form-side">
+                    <form id="login-form">
+                        
+                        <div class="input-group">
+                            <label style="font-family: var(--font-mono); font-weight: 900; font-size: 0.8rem; text-transform: uppercase;">Usuário / E-mail</label>
+                            <input type="email" id="email" class="neo-input" placeholder="exemplo@trendvibes.com" required style="box-shadow: 4px 4px 0 #000;">
+                        </div>
+                        
+                        <div class="input-group" style="margin-top: 20px;">
+                            <label style="font-family: var(--font-mono); font-weight: 900; font-size: 0.8rem; text-transform: uppercase;">Senha</label>
+                            <input type="password" id="senha" class="neo-input" placeholder="••••••••" required style="box-shadow: 4px 4px 0 #000;">
+                        </div>
+                        
+                        <div class="input-group" style="margin-top: 20px;">
+                            <label style="font-family: var(--font-mono); font-weight: 900; font-size: 0.8rem; text-transform: uppercase;">Cargo</label>
+                            <select id="cargo" class="neo-input" required style="box-shadow: 4px 4px 0 #000; cursor: pointer;">
+                            <option value="" disabled selected>SELECIONE SEU CARGO</option>
+                            <option value="Vendedor">Vendedor</option>
+                            <option value="Estoquista">Estoquista</option>
+                            <option value="Gerente">Gerente</option>
+                            <option value="RH">RH</option>
+                        </select>
+                        </div>
+                        
+                        <div style="margin-top: 30px;">
+                            <button type="button" class="btn-login-neo" onclick="realizarLogin()">ENTRAR NO SISTEMA</button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        
+        <p class="login-footer-text">© 2026 TRENDVIBES Streetwear Augusta Inc. Desenvolvido para Vanguarda das Ruas com Integração de Banco de Dados Local.</p>
+    </main>
+
+    <!-- Acessibilidade -->
+<button id="accessibility-btn" class="btn-accessibility" aria-label="Abrir painel de acessibilidade">
+        <span class="acc-icon">ॐ</span> ACESSIBILIDADE
+    </button>
+    
+    <div id="accessibility-panel" class="accessibility-drawer hidden">
+        <div class="acc-header">
+            <h3>ॐ FERRAMENTAS ACESSÍVEIS</h3>
+            <button id="close-accessibility" class="close-btn">X</button>
+        </div>
+        <div class="acc-content">
+            <div class="acc-section">
+                <h4>TAMANHO DOS TEXTOS</h4>
+                <div class="acc-buttons-row">
+                    <button id="font-decrease">A-</button>
+                    <button id="font-reset">NORMAL</button>
+                    <button id="font-increase">A+</button>
+                </div>
+            </div>
+            <div class="acc-section">
+                <h4>MODO DE VISUALIZAÇÃO</h4>
+                <button id="toggle-contrast" class="acc-btn-full">👁️ ATIVAR ALTO CONTRASTE</button>
+            </div>
+            <div class="acc-section">
+                <h4>FONTE ACESSÍVEL (DISLEXIA)</h4>
+                <button id="toggle-dyslexia" class="acc-btn-full">📄 FONTE PARA DISLEXIA</button>
+            </div>
+            <div class="acc-section">
+                <h4>LEITOR DE TELA (TTS)</h4>
+                <button id="toggle-tts" class="acc-btn-full">🔊 ATIVAR NARRADOR</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="acessibilidade.js"></script>
+    
+<script>
+        async function realizarLogin() {
+            const emailDigitado = document.getElementById('email').value;
+            const senhaDigitada = document.getElementById('senha').value;
+            const cargoSelecionado = document.getElementById('cargo').value; 
+
+            if (!emailDigitado || !senhaDigitada || !cargoSelecionado) {
+                alert("Por favor, preencha o e-mail, a senha e selecione o seu cargo.");
+                return;
+            }
+
+            try {
+                const resposta = await fetch('http://localhost:5208/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        email: emailDigitado, 
+                        senha: senhaDigitada,
+                        cargo: cargoSelecionado 
+                    })
+                });
+
+                const dados = await resposta.json();
+
+                if (resposta.ok && dados.sucesso) {
+                    localStorage.setItem('usuarioLogado', JSON.stringify({
+                        colaboradorId: dados.colaboradorId,
+                        nome: dados.nome,
+                        cargo: dados.cargo,
+                        email: dados.email,
+                        turnoStatus: dados.turnoStatus
+                    }));
+                    
+                    window.location.href = dados.url;
+                } else {
+                    alert(dados.mensagem || "Credenciais ou cargo inválidos.");
+                }
+            } catch (erro) {
+                alert("Erro ao conectar com o servidor. Verifique se o terminal do C# está rodando!");
+                console.error(erro);
+            }
+        }
+    </script>
+</body>
+</html>

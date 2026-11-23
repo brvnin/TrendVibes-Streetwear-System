@@ -1,0 +1,20 @@
+# .NET / C#
+bin/
+obj/
+*.user
+.vs/
+
+# Android / Gradle
+.gradle/
+build/
+app/build/
+.idea/
+*.iml
+local.properties
+.navigation/
+captures/
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+*.log

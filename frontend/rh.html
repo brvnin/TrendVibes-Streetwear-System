@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Root (RH) | TrendVibes</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body class="dark-grid-bg">
+
+    <!-- Header Global -->
+     <header class="main-header">
+        <div class="logo">
+            <div class="logo-icon">⚡</div>
+            <div class="logo-text">
+                <h1>TRENDVIBES</h1>
+                <span>STREETWEAR SYSTEM</span>
+            </div>
+        </div>
+        <div class="header-info"><h1>PAINEL DO RH</h1></div>
+    </header>
+
+    <main class="system-container">
+        <div class="user-turn-card">
+            <span class="turn-label">SISTEMA DE TURNO OPERACIONAL</span>
+            <div class="user-info-wrapper">
+                <div class="user-avatar">👤</div>
+                <div class="user-details">
+                    <h2 id="perfilNome">NOME DO USUÁRIO</h2>
+                    <p>Cargo Ativo: <span id="perfilCargo" class="badge-green">CARGO</span> • E-mail: <span id="perfilEmail">email@trendvibes.com</span></p>                
+                </div>
+            </div>
+            
+        <div class="turn-actions">
+                <div class="turn-status">
+                    <span>ESTADO DO TURNO</span>
+                    <button id="status-toggle" class="btn-status" onclick="toggleTurnStatus()">
+                        <span class="status-dot dot-green"></span> 
+                        <span id="status-text">TURNO ATIVO</span>
+                    </button>
+                </div>
+                <a href="login.html" class="btn-end-turn">ENCERRAR TURNO</a>
+            </div>
+        </div>    
+
+        <div class="system-grid">
+            <!-- Sidebar / Menu -->
+            <aside class="system-sidebar">
+                <div class="sidebar-title sidebar-title-green">PAINEL DE RECURSOS HUMANOS</div>
+                <ul class="sidebar-menu sidebar-menu-green">
+                    <li class="menu-item active" onclick="switchTab('holerite', this)">📄 Gerar Folha (Holerite)</li>
+                    <li class="menu-item" onclick="switchTab('metas', this)">🎯 Metas da Gerência</li>
+                    <li class="menu-item" onclick="switchTab('crud', this)">👥 Gestão de Pessoal (CRUD)</li>
+                    <li class="menu-item" onclick="switchTab('faltas', this)">❌ Lançamento de Faltas</li>
+                </ul>
+            </aside>
+
+            <!-- Conteúdo Principal -->
+            <section class="system-content">
+                
+              <!-- ABA 1: Gerar Folha (Holerite) -->
+                <div id="tab-holerite" class="tab-pane active">
+                    
+                    <!-- CSS especial embutido só para a impressão sair perfeita na folha sulfite -->
+                    <style>
+                        @media print {
+                            body * { visibility: hidden; }
+                            .payslip-preview, .payslip-preview * { visibility: visible; }
+                            .payslip-preview { position: absolute; left: 0; top: 0; width: 100%; border: none !important; box-shadow: none !important; padding: 0;}
+                            .btn-black, .btn-accessibility { display: none !important; }
+                        }
+                    </style>
+
+                    <div class="neo-box box-white">
+                        <h2 class="box-title">EMISSÃO DE FOLHA DE PAGAMENTO</h2>
+                        <p class="box-subtitle">GERAÇÃO DE HOLERITE COM INTEGRAÇÃO AUTOMÁTICA DE COMISSÕES E DESCONTOS.</p>
+                        
+                       <form style="display: flex; gap: 15px; align-items: flex-end; margin-bottom: 30px; flex-wrap: wrap;">
+                            
+                            <div class="input-group" style="flex: 2; min-width: 250px;">
+                                <label>SELECIONAR COLABORADOR</label>
+                                <select id="selectColaboradorRh" class="neo-input">
+                                    <option value="">Carregando equipe...</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group" style="flex: 1; min-width: 150px;">
+                                <label>COMPETÊNCIA (MÊS/ANO)</label>
+                                <select id="selectMesRh" class="neo-input">
+                                    <option>Maio / 2026</option>
+                                    <option>Abril / 2026</option>
+                                    <option>Março / 2026</option>
+                                    <option>Fevereiro / 2026</option>
+                                </select>
+                            </div>
+                            
+                            <button type="button" class="btn-black" style="flex: 1; min-width: 220px; white-space: nowrap; padding: 15px;" onclick="gerarHolerite()">
+                                GERAR PRÉVIA DO HOLERITE
+                            </button>
+                            
+                        </form>
+
+                        <!-- Preview do Holerite -->
+                        <div class="payslip-preview" id="areaHoleriteImprimir">
+                            <div class="payslip-header">
+                                <div>
+                                    <h3>TRENDVIBES STREETWEAR LTDA.</h3>
+                                    <span style="font-size: 0.7rem; color: #666;">CNPJ: 00.000.000/0001-00</span>
+                                </div>
+                                <div class="payslip-month" id="holeriteMes">Maio / 2026</div>
+                            </div>
+                            
+                            <hr class="dashed-hr">
+                            
+                            <div class="payslip-employee-info">
+                                <div><strong>Nome:</strong> <span id="holNome">---</span></div>
+                                <div><strong>Cargo:</strong> <span id="holCargo">---</span></div>
+                                <div><strong>Admissão:</strong> <span id="holAdmissao">---</span></div>
+                                <div><strong>CBO:</strong> <span id="holCbo">---</span></div>
+                            </div>
+
+                            <table class="payslip-table">
+                                <thead>
+                                    <tr>
+                                        <th>Cód.</th>
+                                        <th>Descrição</th>
+                                        <th>Ref.</th>
+                                        <th>Vencimentos</th>
+                                        <th>Descontos</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>001</td>
+                                        <td>Salário Base</td>
+                                        <td>30 Dias</td>
+                                        <td class="val-green" id="holSalarioBase">R$ 0,00</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>015</td>
+                                        <td>Comissão sobre Vendas (5%)</td>
+                                        <td id="holRefComissao">R$ 0,00</td>
+                                        <td class="val-green" id="holValorComissao">R$ 0,00</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>101</td>
+                                        <td>INSS Salário</td>
+                                        <td>8.06%</td>
+                                        <td></td>
+                                        <td class="val-red" id="holInss">R$ 0,00</td>
+                                    </tr>
+                                  <tr>
+                                        <td>205</td>
+                                        <td>Faltas Não Justificadas</td>
+                                        <td id="holRefFaltas">0 Dias</td>
+                                        <td></td>
+                                        <td class="val-red" id="holFaltas">R$ 0,00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <hr class="dashed-hr">
+                            
+                            <div class="payslip-footer">
+                                <div class="payslip-totals">
+                                    <div>
+                                        <span>Total de Vencimentos</span>
+                                        <strong id="holTotVencimentos">R$ 0,00</strong>
+                                    </div>
+                                    <div>
+                                        <span>Total de Descontos</span>
+                                        <strong id="holTotDescontos">R$ 0,00</strong>
+                                    </div>
+                                    <div class="net-total">
+                                        <span>LÍQUIDO A RECEBER</span>
+                                        <strong style="color: #0056b3;" id="holLiquido">R$ 0,00</strong>
+                                    </div>
+                                </div>
+                                <button class="btn-black" style="float: right; margin-top: 20px;" onclick="window.print()">IMPRIMIR VIA 🖨️</button>
+                                <div style="clear: both;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        <!-- ABA 2: Metas da Gerência -->
+               <div id="tab-metas" class="tab-pane">
+            <div class="neo-box box-white">
+                <h2 class="box-title">METAS DA GERÊNCIA GERAL</h2>
+                <p class="box-subtitle">DEFINA O ALVO FINANCEIRO GLOBAL E O BÔNUS.</p>
+                
+               <form id="form-meta-gerente" class="tactical-form" style="margin-top: 30px;">
+                    <div class="input-group">
+                        <label>SELECIONAR GERENTE</label>
+                        <select id="metaColaboradorId" class="neo-input" required>
+                            <option value="">Carregando gerentes...</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>ALVO FINANCEIRO GLOBAL (R$)</label>
+                        <input type="text" id="metaValor" class="neo-input" placeholder="Ex: 150000.00" required>
+                    </div>
+                    <div class="input-group">
+                        <label>% BÔNUS SOBRE FATURAMENTO</label>
+                        <input type="text" id="metaBonus" class="neo-input" placeholder="Ex: 2.5" required>
+                    </div>
+                    <button type="button" class="btn-full-black" onclick="salvarMetaGerente()">SALVAR META GERENCIAL</button>
+                </form>
+            </div>
+        </div>
+
+               <!-- ABA 3: Gestão de Pessoal (CRUD) -->
+                <div id="tab-crud" class="tab-pane">
+                    <div class="neo-box box-white">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                            <div>
+                                <h2 class="box-title">GESTÃO DE PESSOAL (CRUD)</h2>
+                                <p class="box-subtitle">ADMISSÃO, EDIÇÃO E DESLIGAMENTO DE COLABORADORES.</p>
+                            </div>
+                            <button class="btn-black" onclick="abrirModalFuncionario(0)">+ NOVO FUNCIONÁRIO</button>
+                        </div>
+
+                        <div style="overflow-x: auto; margin-top: 30px;">
+                            <table class="payslip-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>NOME DO COLABORADOR</th>
+                                        <th>CARGO</th>
+                                        <th>STATUS</th>
+                                        <th style="text-align: right;">AÇÕES</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabelaFuncionariosCrud">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ABA 4: Lançamento de Faltas -->
+                <div id="tab-faltas" class="tab-pane">
+                    <div class="neo-box box-white">
+                        <h2 class="box-title">LANÇAMENTO DE FALTAS E OCORRÊNCIAS</h2>
+                        <p class="box-subtitle">REGISTRO DE ABSENTEÍSMO, ATRASOS E ATESTADOS MÉDICOS.</p>
+
+                        <form id="form-ocorrencia" class="tactical-form" style="margin-top: 30px;">
+                            <div class="input-group full-width">
+                                <label>COLABORADOR</label>
+                                <select id="faltaColaboradorId" class="neo-input" required>
+                                    <option value="">Carregando equipe...</option>
+                                </select>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px;">
+                                <div class="input-group">
+                                    <label>DATA DA OCORRÊNCIA</label>
+                                    <input type="date" id="faltaData" class="neo-input" required>
+                                </div>
+                                <div class="input-group">
+                                    <label>TIPO DE OCORRÊNCIA</label>
+                                    <select id="faltaTipo" class="neo-input" required>
+                                        <option value="Falta Não Justificada">Falta Não Justificada (Desconta no Holerite)</option>
+                                        <option value="Atestado Médico">Atestado Médico (Abonado)</option>
+                                        <option value="Atraso">Atraso / Saída Antecipada</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="input-group full-width" style="margin-top: 15px;">
+                                <label>ANEXAR DOCUMENTO / ATESTADO (OPCIONAL)</label>
+                                <input type="file" id="faltaAnexo" class="neo-input" accept=".pdf,.jpg,.png">
+                            </div>
+
+                            <div class="full-width" style="margin-top: 30px;">
+                                <button type="button" class="btn-full-black" onclick="registrarOcorrencia()">REGISTRAR OCORRÊNCIA</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </section> 
+        </div>
+    </main>
+
+    <!-- ==========================================
+         MODAIS DE GESTÃO (FORA DO GRID) 
+         ========================================== -->
+
+    <!-- MODAL 1: ADICIONAR / EDITAR FUNCIONÁRIO -->
+    <div id="modal-funcionario" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2 id="modalFuncTitle" class="box-title">NOVO FUNCIONÁRIO</h2>
+            <p id="modalFuncSub" style="font-size: 0.8rem; color: #666; margin-bottom: 20px;">Crie um novo acesso para a plataforma.</p>
+            
+            <form id="form-funcionario" class="tactical-form">
+                <input type="hidden" id="funcUserId" value="0">
+                <input type="hidden" id="funcColabId" value="0">
+                
+                <div class="input-group full-width">
+                    <label>NOME COMPLETO</label>
+                    <input type="text" id="funcNome" class="neo-input" placeholder="Ex: João da Silva" required>
+                </div>
+                <div class="input-group full-width" style="margin-top: 15px;">
+                    <label>E-MAIL (Login do Sistema)</label>
+                    <input type="email" id="funcEmail" class="neo-input" placeholder="Ex: joao@trendvibes.com" required>
+                </div>
+                <div class="input-group full-width" style="margin-top: 15px;">
+                    <label>SENHA DE ACESSO</label>
+                    <input type="password" id="funcSenha" class="neo-input" placeholder="Ex: Trend@123">
+                    <small style="color: #cc0000; font-weight: bold; font-family: var(--font-mono);" id="avisoSenha"></small>
+                </div>
+                <div class="input-group full-width" style="margin-top: 15px;">
+                    <label>ATRIBUIÇÃO DE CARGO</label>
+                    <select id="funcCargo" class="neo-input" required>
+                        <option value="Vendedor">Vendedor</option>
+                        <option value="Estoquista">Estoquista</option>
+                        <option value="Gerente">Gerente</option>
+                        <option value="RH">Recursos Humanos</option>
+                    </select>
+                </div>
+                
+                <div class="full-width" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                    <div class="input-group">
+                        <label>DATA DE ADMISSÃO</label>
+                        <input type="date" id="funcData" class="neo-input" required>
+                    </div>
+                    <div class="input-group">
+                        <label>SALÁRIO BASE (R$)</label>
+                        <input type="number" step="0.01" id="funcSalario" class="neo-input" placeholder="Ex: 2500.00" required>
+                    </div>
+                </div>
+                
+                <div class="full-width" style="display: flex; gap: 10px; margin-top: 30px;">
+                    <button type="button" class="btn-outline" style="flex: 1;" onclick="fecharModal('modal-funcionario')">CANCELAR</button>
+                    <button type="button" class="btn-black" style="flex: 1;" onclick="salvarFuncionario()">SALVAR REGISTRO</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: FICHA DO COLABORADOR -->
+    <div id="modal-ficha" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2 class="box-title">FICHA CADASTRAL</h2>
+            <hr class="dashed-hr">
+            <div id="conteudoFicha" style="font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.8; color: #000;">
+            </div>
+            <button class="btn-black full-width" style="margin-top: 30px;" onclick="fecharModal('modal-ficha')">FECHAR FICHA</button>
+        </div>
+    </div>
+
+    <!-- Acessibilidade -->
+    <button id="accessibility-btn" class="btn-accessibility" aria-label="Abrir painel de acessibilidade">
+        <span class="acc-icon">ॐ</span> ACESSIBILIDADE
+    </button>
+    
+   <div id="accessibility-panel" class="accessibility-drawer hidden">
+        <div class="acc-header">
+            <h3>ॐ FERRAMENTAS ACESSÍVEIS</h3>
+            <button id="close-accessibility" class="close-btn">X</button>
+        </div>
+        <div class="acc-content">
+            <div class="acc-section">
+                <h4>TAMANHO DOS TEXTOS</h4>
+                <div class="acc-buttons-row">
+                    <button id="font-decrease">A-</button>
+                    <button id="font-reset">NORMAL</button>
+                    <button id="font-increase">A+</button>
+                </div>
+            </div>
+            <div class="acc-section">
+                <h4>MODO DE VISUALIZAÇÃO</h4>
+                <button id="toggle-contrast" class="acc-btn-full">👁️ ATIVAR ALTO CONTRASTE</button>
+            </div>
+            <div class="acc-section">
+                <h4>FONTE ACESSÍVEL (DISLEXIA)</h4>
+                <button id="toggle-dyslexia" class="acc-btn-full">📄 FONTE PARA DISLEXIA</button>
+            </div>
+            <div class="acc-section">
+                <h4>LEITOR DE TELA (TTS)</h4>
+                <button id="toggle-tts" class="acc-btn-full">🔊 ATIVAR NARRADOR</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="acessibilidade.js"></script>
+    <script>
+        // ==========================================
+        // FUNÇÃO PARA CARREGAR OS DADOS DO USUÁRIO LOGADO
+        // ==========================================
+        function carregarDadosUsuario() {
+            const usuarioSalvo = localStorage.getItem('usuarioLogado');
+            if (!usuarioSalvo) return;
+            
+            const dadosUsuario = JSON.parse(usuarioSalvo);
+            
+            document.getElementById('perfilNome').innerText = dadosUsuario.nome.toUpperCase();
+            document.getElementById('perfilCargo').innerText = dadosUsuario.cargo.toUpperCase();
+            
+            const emailSeguro = dadosUsuario.email ? dadosUsuario.email : "email-pendente@trendvibes.com";
+            document.getElementById('perfilEmail').innerText = emailSeguro.toLowerCase();
+
+            const btn = document.getElementById('status-toggle');
+            const dot = btn.querySelector('.status-dot');
+            const text = document.getElementById('status-text');
+
+            if (dadosUsuario.turnoStatus === 'AUSENTE') {
+                btn.classList.add('ausente');
+                dot.className = 'status-dot dot-yellow';
+                text.innerText = 'AUSENTE';
+            } else {
+                btn.classList.remove('ausente');
+                dot.className = 'status-dot dot-green';
+                text.innerText = 'TURNO ATIVO';
+            }
+        }
+
+        // ==========================================
+        // Lógica de alternância das abas
+        // ==========================================
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+            
+            element.classList.add('active');
+            document.getElementById('tab-' + tabId).classList.add('active');
+        }
+
+     // ==========================================
+        // ALTERNÂNCIA DE STATUS DO TURNO (COM MEMÓRIA)
+        // ==========================================
+        async function toggleTurnStatus() {
+            const btn = document.getElementById('status-toggle');
+            const dot = btn.querySelector('.status-dot');
+            const text = document.getElementById('status-text');
+            
+            const user = JSON.parse(localStorage.getItem('usuarioLogado'));
+            if (!user) return;
+
+            const isAtivo = !btn.classList.contains('ausente');
+            const novoStatus = isAtivo ? 'AUSENTE' : 'ATIVO'; 
+
+            try {
+                // 1. Atualiza no Banco de Dados (C#)
+                await fetch('http://localhost:5208/api/turno', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ colaboradorId: user.colaboradorId, status: novoStatus })
+                });
+
+                // 2. Muda a cor e o texto no ecrã
+                if (novoStatus === 'ATIVO') {
+                    btn.classList.remove('ausente');
+                    dot.className = 'status-dot dot-green';
+                    text.innerText = 'TURNO ATIVO';
+                } else {
+                    btn.classList.add('ausente');
+                    dot.className = 'status-dot dot-yellow';
+                    text.innerText = 'AUSENTE';
+                }
+
+                // 3. AQUI ESTÁ A CORREÇÃO: Guarda na memória do navegador para resistir ao F5!
+                user.turnoStatus = novoStatus;
+                localStorage.setItem('usuarioLogado', JSON.stringify(user));
+
+                // Se for o painel do Gerente, atualiza a lista de colaboradores na hora
+                if (typeof carregarListaEquipe === "function") {
+                    carregarListaEquipe();
+                }
+                
+            } catch (erro) { 
+                console.error("Erro ao mudar turno:", erro); 
+            }
+        }
+        
+        // ==========================================
+        // Funções para abrir e fechar o Modal de Novo Funcionário
+        // ==========================================
+        function abrirModalFuncionario() {
+            document.getElementById('modal-novo-funcionario').classList.remove('hidden');
+        }
+
+        function fecharModalFuncionario() {
+            document.getElementById('modal-novo-funcionario').classList.add('hidden');
+        }
+
+        // ==========================================
+        // ATRIBUIÇÃO DE METAS DO GERENTE
+        // ==========================================
+        async function salvarMetaGerente() {
+            let idDigitado = document.getElementById('metaColaboradorId').value;
+            let valorDigitado = document.getElementById('metaValor').value.replace(',', '.');
+            let bonusDigitado = document.getElementById('metaBonus').value.replace(',', '.');
+
+            if (!idDigitado || !valorDigitado || !bonusDigitado) {
+                alert("Por favor, preencha todos os campos da meta!");
+                return;
+            }
+
+            const dados = {
+                colaboradorId: parseInt(idDigitado),
+                valorMeta: parseFloat(valorDigitado),
+                bonusPercentual: parseFloat(bonusDigitado), 
+                mesReferencia: "05/2026" 
+            };
+
+            try {
+                const res = await fetch('http://localhost:5208/api/metas', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dados)
+                });
+
+                if (res.ok) {
+                    alert("Meta salva com sucesso! O painel do gerente correspondente será atualizado em tempo real.");
+                    document.getElementById('form-meta-gerente').reset();
+                } else {
+                    alert("Erro ao salvar. Verifique os dados.");
+                }
+            } catch (err) {
+                console.error("Erro na comunicação:", err);
+                alert("Erro de conexão com o servidor da API.");
+            }
+        }
+
+        // ==========================================
+        // 1. CARREGAR LISTA DE COLABORADORES NO DROPDOWN
+        // ==========================================
+        async function carregarColaboradoresRh() {
+            try {
+                const res = await fetch('http://localhost:5208/api/colaboradores/simples');
+                const colaboradores = await res.json();
+                
+                const selectHolerite = document.getElementById('selectColaboradorRh');
+                const selectFalta = document.getElementById('faltaColaboradorId');
+                const selectMetaGerente = document.getElementById('metaColaboradorId'); // NOVO: Dropdown de Metas
+                
+                let optionsGeral = '<option value="">-- Selecione um Colaborador --</option>';
+                let optionsGerente = '<option value="">-- Selecione um Gerente --</option>';
+                
+                colaboradores.forEach(c => {
+                    // Preenche a lista geral (Holerites e Faltas)
+                    optionsGeral += `<option value="${c.id}">${c.nome} (${c.cargo})</option>`;
+                    
+                    // Preenche a lista de Metas APENAS com quem for Gerente
+                    if (c.cargo === 'Gerente') {
+                        optionsGerente += `<option value="${c.id}">${c.nome}</option>`;
+                    }
+                });
+
+                if(selectHolerite) selectHolerite.innerHTML = optionsGeral;
+                if(selectFalta) selectFalta.innerHTML = optionsGeral; 
+                if(selectMetaGerente) selectMetaGerente.innerHTML = optionsGerente;
+            } catch (err) { console.error("Erro ao carregar colaboradores:", err); }
+        }
+
+        // ==========================================
+        // 2. GERAR HOLERITE COM CÁLCULOS DA API
+        // ==========================================
+        async function gerarHolerite() {
+            const idColaborador = document.getElementById('selectColaboradorRh').value;
+            const mesSelecionado = document.getElementById('selectMesRh').value;
+
+            if (!idColaborador) {
+                alert("Por favor, selecione um colaborador na lista antes de gerar o holerite.");
+                return;
+            }
+
+            try {
+                // Puxa a matemática exata que fizemos no C#
+                const res = await fetch(`http://localhost:5208/api/holerite/${idColaborador}`);
+                const dados = await res.json();
+
+                if (dados.sucesso) {
+                    // Função rápida para formatar os valores em Reais (R$)
+                    const formatar = (valor) => valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+                    // A - Atualiza o Cabeçalho
+                    document.getElementById('holeriteMes').innerText = mesSelecionado;
+
+                    // B - Atualiza as Informações do Colaborador
+                    document.getElementById('holNome').innerText = dados.nome;
+                    document.getElementById('holCargo').innerText = dados.cargo;
+                    document.getElementById('holAdmissao').innerText = dados.admissao;
+                    document.getElementById('holCbo').innerText = dados.cbo;
+
+                    // C - Atualiza a Tabela de Vencimentos e Descontos
+                    document.getElementById('holSalarioBase').innerText = formatar(dados.salarioBase);
+                    
+                    // Mostra o total vendido como "Ref." e o valor da comissão na coluna de vencimentos
+                    document.getElementById('holRefComissao').innerText = formatar(dados.totalVendas);
+                    document.getElementById('holValorComissao').innerText = formatar(dados.comissao);
+                    
+                    document.getElementById('holInss').innerText = formatar(dados.inss);
+                    document.getElementById('holFaltas').innerText = formatar(dados.faltas);
+                    document.getElementById('holRefFaltas').innerText = `${dados.diasFalta} Dia(s)`;
+
+                    // D - Atualiza os Totais Finais
+                    document.getElementById('holTotVencimentos').innerText = formatar(dados.totalVencimentos);
+                    document.getElementById('holTotDescontos').innerText = formatar(dados.totalDescontos);
+                    document.getElementById('holLiquido').innerText = formatar(dados.liquido);
+
+                } else {
+                    alert("Erro ao gerar o holerite.");
+                }
+            } catch (err) {
+                console.error("Erro ao buscar holerite:", err);
+                alert("Erro de ligação com a API.");
+            }
+        }
+
+        // ==========================================
+        // 3. REGISTRAR NOVA FALTA / OCORRÊNCIA
+        // ==========================================
+        async function registrarOcorrencia() {
+            const idColab = document.getElementById('faltaColaboradorId').value;
+            const dataOcorrencia = document.getElementById('faltaData').value;
+            const tipo = document.getElementById('faltaTipo').value;
+            const anexo = document.getElementById('faltaAnexo').value;
+
+            if (!idColab || !dataOcorrencia || !tipo) {
+                alert("Por favor, preencha o Colaborador, a Data e o Tipo de Ocorrência!");
+                return;
+            }
+
+            try {
+                const res = await fetch('http://localhost:5208/api/ocorrencias', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        colaboradorId: parseInt(idColab),
+                        dataOcorrencia: dataOcorrencia,
+                        tipo: tipo,
+                        anexo: anexo ? anexo.replace(/^.*[\\\/]/, '') : "Nenhum" // Pega apenas o nome do arquivo se existir
+                    })
+                });
+
+                if (res.ok) {
+                    alert(`Ocorrência de "${tipo}" registrada com sucesso! Se for Falta Não Justificada, o desconto aparecerá automaticamente no Holerite.`);
+                    document.getElementById('form-ocorrencia').reset();
+                } else {
+                    alert("Erro ao registrar a ocorrência no servidor.");
+                }
+            } catch (erro) {
+                console.error("Erro:", erro);
+                alert("Falha na comunicação com a API.");
+            }
+        }
+
+        // ==========================================
+        // GESTÃO DE PESSOAL (CRUD)
+        // ==========================================
+        let listaPessoalGlobal = [];
+
+        async function carregarListaPessoal() {
+            try {
+                const res = await fetch('http://localhost:5208/api/pessoal');
+                listaPessoalGlobal = await res.json();
+                
+                const tbody = document.getElementById('tabelaFuncionariosCrud');
+                if(!tbody) return;
+                
+                tbody.innerHTML = '';
+
+                listaPessoalGlobal.forEach(f => {
+                    const isAtivo = f.status === 'ATIVO';
+                    const badgeStatus = isAtivo 
+                        ? '<span class="badge-green">ATIVO</span>' 
+                        : '<span style="background: #ffcccc; color: #cc0000; padding: 2px 8px; font-size: 0.7rem; font-weight: bold; border: 2px solid #000;">INATIVO</span>';
+                    
+                    // Botão dinâmico: Se está ativo mostra "DESLIGAR", se inativo mostra "REATIVAR"
+                    const btnStatus = isAtivo 
+                        ? `<button class="btn-acao btn-desligar" onclick="alterarStatusFuncionario(${f.userId}, 'INATIVO')">Desligar</button>`
+                        : `<button class="btn-acao btn-reativar" onclick="alterarStatusFuncionario(${f.userId}, 'ATIVO')">Reativar</button>`;
+
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong>#${f.colabId}</strong></td>
+                            <td style="font-weight: 900;">${f.nome.toUpperCase()}</td>
+                            <td>${f.cargo}</td>
+                            <td>${badgeStatus}</td>
+                            <td style="text-align: right;">
+                                <button class="btn-acao" onclick="verFicha(${f.userId})">Ver Ficha</button>
+                                <button class="btn-acao" onclick="abrirModalFuncionario(${f.userId})">Editar</button>
+                                ${btnStatus}
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (err) { console.error("Erro ao carregar equipe:", err); }
+        }
+
+        // --- FUNÇÕES DOS MODAIS ---
+        function fecharModal(idModal) {
+            document.getElementById(idModal).classList.add('hidden');
+        }
+
+      function abrirModalFuncionario(userId) {
+            document.getElementById('funcUserId').value = userId;
+            document.getElementById('avisoSenha').innerText = "";
+            
+            if (userId === 0) {
+                document.getElementById('modalFuncTitle').innerText = "NOVO FUNCIONÁRIO";
+                document.getElementById('modalFuncSub').innerText = "Crie um novo acesso para a plataforma.";
+                document.getElementById('funcNome').value = "";
+                document.getElementById('funcEmail').value = "";
+                document.getElementById('funcSenha').value = "";
+                
+                // Preenche a data de hoje e zera o salário
+                document.getElementById('funcData').value = new Date().toISOString().split('T')[0];
+                document.getElementById('funcSalario').value = "";
+            } else {
+                // Modo EDITAR: Procura o usuário na lista e preenche a tela
+                const f = listaPessoalGlobal.find(u => u.userId === userId);
+                if(f) {
+                    document.getElementById('modalFuncTitle').innerText = "EDITAR FUNCIONÁRIO";
+                    document.getElementById('funcUserId').value = f.userId;
+                    document.getElementById('funcColabId').value = f.colabId;
+                    document.getElementById('funcNome').value = f.nome;
+                    document.getElementById('funcEmail').value = f.email;
+                    document.getElementById('funcCargo').value = f.cargo;
+                    document.getElementById('funcSenha').required = false;
+                    document.getElementById('avisoSenha').innerText = "Deixe em branco para manter a senha atual.";
+                }
+            }
+            document.getElementById('modal-funcionario').classList.remove('hidden');
+        }
+
+        async function salvarFuncionario() {
+            const userId = parseInt(document.getElementById('funcUserId').value);
+            const colabId = parseInt(document.getElementById('funcColabId').value);
+            const nome = document.getElementById('funcNome').value;
+            const email = document.getElementById('funcEmail').value;
+            const senha = document.getElementById('funcSenha').value;
+            const cargo = document.getElementById('funcCargo').value;
+            
+            const dataAdmissao = document.getElementById('funcData').value;
+            const salarioBase = parseFloat(document.getElementById('funcSalario').value) || 0;
+
+            if (!nome || !email || !cargo || !dataAdmissao) {
+                alert("Preencha todos os campos obrigatórios!");
+                return;
+            }
+
+            try {
+                const res = await fetch('http://localhost:5208/api/pessoal', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        userId: userId, 
+                        colabId: colabId, 
+                        nome: nome, 
+                        email: email, 
+                        senha: senha, 
+                        cargo: cargo,
+                        dataAdmissao: dataAdmissao,
+                        salarioBase: salarioBase    
+                    }) 
+                });
+
+                if (res.ok) {
+                    alert(userId == 0 ? "Funcionário admitido com sucesso!" : "Cadastro atualizado com sucesso!");
+                    fecharModal('modal-funcionario');
+                    carregarListaPessoal(); 
+                    carregarColaboradoresRh(); 
+                } else {
+                    const erroJson = await res.json();
+                    alert("Ocorreu um erro: " + erroJson.mensagem);
+                }
+            } catch (err) { 
+                alert("Erro de conexão com o banco de dados."); 
+            }
+        }
+
+        async function alterarStatusFuncionario(userId, novoStatus) {
+            const acao = novoStatus === 'INATIVO' ? "desligar (inativar acesso)" : "reativar";
+            if(!confirm(`Tem certeza que deseja ${acao} este colaborador?`)) return;
+
+            try {
+                const res = await fetch('http://localhost:5208/api/pessoal/status', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: userId, novoStatus: novoStatus })
+                });
+                
+                if (res.ok) carregarListaPessoal();
+            } catch (err) { alert("Erro de comunicação com o servidor."); }
+        }
+
+        function verFicha(userId) {
+            const f = listaPessoalGlobal.find(u => u.userId === userId);
+            if(f) {
+                const htmlFicha = `
+                    <p><strong>ID Sistema:</strong> #${f.userId}</p>
+                    <p><strong>Colaborador:</strong> ${f.nome.toUpperCase()}</p>
+                    <p><strong>Cargo Atual:</strong> ${f.cargo}</p>
+                    <p><strong>E-mail Institucional:</strong> ${f.email}</p>
+                    <p><strong>Status Operacional:</strong> <span style="color: ${f.status === 'ATIVO' ? 'green' : 'red'}; font-weight: bold;">${f.status}</span></p>
+                `;
+                document.getElementById('conteudoFicha').innerHTML = htmlFicha;
+                document.getElementById('modal-ficha').classList.remove('hidden');
+            }
+        }
+
+     // ==========================================
+        // Inicialização da Página
+        // ==========================================
+        window.onload = function() {
+            carregarDadosUsuario();
+            carregarColaboradoresRh();
+            carregarListaPessoal();
+        };
+    </script>
+</body>
+</html>

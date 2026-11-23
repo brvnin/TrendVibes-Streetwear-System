@@ -1,0 +1,800 @@
+:root { --bg-color: #111; --text-color: #fff; --brand-red: #cc0000; --brand-yellow: #ffcc00; --border: #000; }
+body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Space Grotesk', sans-serif; transition: 0.3s; }
+.top-bar { background-color: var(--brand-red); text-align: center; padding: 8px; font-size: 0.75rem; font-weight: 700; border-bottom: 2px solid var(--border); }
+.main-header { 
+    background: #fff; color: #000; display: flex; justify-content: space-between; 
+    padding: 15px 40px; border-bottom: 4px solid #000; align-items: center;
+}.btn-accessibility { position: fixed; bottom: 25px; left: 25px; background: var(--brand-yellow); border: 3px solid var(--border); padding: 12px 20px; cursor: pointer; font-weight: 900; z-index: 100; box-shadow: 5px 5px 0 var(--border); }
+.accessibility-drawer { position: fixed; top: 0; left: 0; bottom: 0; width: 350px; background: #fff; color: #000; border-right: 6px solid var(--border); z-index: 105; transition: 0.3s; }
+.hidden { transform: translateX(-100%); }
+.acc-header { background: var(--brand-yellow); padding: 20px; border-bottom: 4px solid var(--border); display: flex; justify-content: space-between; }
+.acc-content { padding: 20px; }
+.acc-btn-full { width: 100%; margin-top: 10px; padding: 10px; border: 2px solid #000; cursor: pointer; font-weight: bold; }
+
+/* Modos */
+body.high-contrast-mode { --bg-color: #000; --text-color: #fff; --brand-yellow: #fff; }
+body.dyslexia-mode * { font-family: 'JetBrains Mono', monospace !important; }
+
+/* Hero Banner */
+.hero-banner { 
+    background: #222; padding: 100px 20px; text-align: center; border-bottom: 4px solid var(--border); 
+}
+.brand-title { font-size: 5rem; font-weight: 900; }
+.red { color: var(--brand-red); }
+.sub-title { background: #fff; color: #000; padding: 5px 15px; border: 4px solid #000; }
+
+/* Grid de Produtos */
+.catalog-section { padding: 40px; }
+.product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+.product-card { border: 4px solid #000; padding: 20px; box-shadow: 5px 5px 0 #000; background: #fff; color: #000; }
+
+/* Cart Drawer */
+.cart-drawer { 
+    position: fixed; top: 0; right: 0; bottom: 0; width: 350px; background: #fff; color: #000; 
+    border-left: 4px solid #000; z-index: 200; padding: 20px; transition: 0.3s;
+}
+.hidden { display: none; }
+
+.login-section { height: 100vh; display: flex; align-items: center; justify-content: center; }
+.login-card { 
+    background: #fff; color: #000; padding: 40px; border: 4px solid #000; 
+    box-shadow: 8px 8px 0 #000; width: 100%; max-width: 400px; 
+}
+.login-card input, .login-card select { 
+    width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #000; font-family: var(--font-mono); 
+}
+.btn-login { 
+    width: 100%; background: var(--brand-red); color: white; border: 3px solid #000; 
+    padding: 15px; font-weight: 900; cursor: pointer; margin-top: 10px;
+}
+.hidden { display: none; }
+
+.painel-cargo { padding: 40px; display: flex; justify-content: center; }
+.painel-card { 
+    background: #fff; color: #000; padding: 30px; border: 4px solid #000; 
+    width: 100%; max-width: 500px; box-shadow: 8px 8px 0 #000; 
+}
+.stat-box { border: 2px solid #000; padding: 10px; margin: 10px 0; font-weight: bold; }
+.btn-action { 
+    width: 100%; background: #000; color: #fff; padding: 15px; border: none; cursor: pointer; font-weight: 900; 
+}
+.hidden { display: none !important; }
+
+/* =========================================
+   ESTILOS DOS PAINÉIS INTERNOS (SISTEMA)
+   ========================================= */
+
+.panel-header {
+    background: #fff; color: #000; padding: 20px 40px; border-bottom: 4px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10;
+}
+.header-info h1 { font-size: 1.5rem; font-weight: 900; margin-bottom: 5px; }
+.status-badge { background: #000; color: #fff; padding: 8px 15px; font-weight: bold; border: 3px solid var(--border); font-family: var(--font-mono); }
+.btn-logout { 
+    background: var(--brand-red); color: #fff; padding: 10px 20px; text-decoration: none; 
+    font-weight: 900; border: 3px solid var(--border); box-shadow: 4px 4px 0 var(--border); transition: 0.1s;
+}
+.btn-logout:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--border); }
+
+.panel-content { padding: 40px; max-width: 1200px; margin: 0 auto; }
+.dashboard-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; }
+
+.neo-card { background: #fff; color: #000; padding: 30px; border: 4px solid var(--border); box-shadow: 8px 8px 0 var(--border); margin-bottom: 30px; }
+.neo-card h2, .neo-card h3 { border-bottom: 4px solid var(--border); padding-bottom: 10px; margin-bottom: 20px; font-weight: 900; }
+
+.neo-form label { display: block; font-weight: 900; margin-bottom: 8px; font-size: 0.9rem; }
+.neo-form input { width: 100%; padding: 15px; margin-bottom: 25px; border: 3px solid var(--border); font-family: var(--font-mono); font-size: 1.1rem; }
+.btn-action { 
+    width: 100%; background: #000; color: #fff; padding: 18px; border: 3px solid var(--border); 
+    cursor: pointer; font-weight: 900; font-size: 1.1rem; transition: 0.2s; box-shadow: 4px 4px 0 var(--border);
+}
+.btn-action:hover { background: var(--brand-yellow); color: #000; }
+.btn-action:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--border); }
+
+.stat-value { font-size: 2rem; font-weight: 900; font-family: var(--font-mono); margin-bottom: 10px; }
+.highlight { color: var(--brand-red); }
+.progress-bar { width: 100%; height: 30px; border: 3px solid var(--border); background: #f0f0f0; }
+.progress-fill { height: 100%; background: var(--brand-yellow); border-right: 3px solid var(--border); }
+
+.neo-list { list-style: none; }
+.neo-list li { display: flex; justify-content: space-between; padding: 15px; border: 3px solid var(--border); margin-bottom: 10px; font-family: var(--font-mono); font-weight: bold; background: #fafafa;}
+
+/* =========================================
+   ESTILOS ESPECÍFICOS: ESTOQUISTA & TAREFAS
+   ========================================= */
+.task-item { align-items: center; }
+.task-info { display: flex; align-items: center; gap: 15px; }
+
+.tag-priority { 
+    padding: 4px 10px; font-weight: 900; border: 2px solid var(--border); 
+    font-size: 0.8rem; font-family: var(--font-mono); 
+}
+.tag-priority.high { background: var(--brand-red); color: #fff; }
+.tag-priority.med  { background: var(--brand-yellow); color: #000; }
+.tag-priority.low  { background: #eee; color: #000; }
+
+.btn-task-done {
+    background: #000; color: #fff; border: 2px solid #000; width: 40px; height: 40px;
+    font-size: 1.2rem; cursor: pointer; transition: 0.2s;
+}
+.btn-task-done:hover { background: #4caf50; border-color: #4caf50; }
+.btn-task-done:disabled { background: #ccc; border-color: #ccc; cursor: not-allowed; }
+
+/* =========================================
+   ESTILOS ESPECÍFICOS: GERENTE & AUTORIZAÇÕES
+   ========================================= */
+.auth-info { margin-bottom: 10px; }
+.auth-info span { font-size: 0.9rem; color: #444; }
+.auth-actions { display: flex; gap: 10px; }
+
+.btn-approve { background: #4caf50; color: #fff; border: 2px solid #000; padding: 8px 15px; font-weight: bold; cursor: pointer; }
+.btn-reject { background: var(--brand-red); color: #fff; border: 2px solid #000; padding: 8px 15px; font-weight: bold; cursor: pointer; }
+.btn-approve:hover { background: #45a049; }
+.btn-reject:hover { background: #b30000; }
+
+.staff-list li { align-items: center; }
+.status-dot { width: 15px; height: 15px; border-radius: 50%; border: 2px solid #000; display: inline-block; }
+.status-dot.green { background: #4caf50; box-shadow: 0 0 5px #4caf50; }
+.status-dot.red { background: var(--brand-red); }
+
+body.high-contrast-mode .auth-info span { color: #ccc; }
+
+/* =========================================
+   ESTILOS ESPECÍFICOS: RH & HOLERITES
+   ========================================= */
+.btn-payslip {
+    background: #000; color: #fff; border: 2px solid #000; padding: 6px 12px;
+    font-weight: 900; cursor: pointer; font-family: var(--font-mono); transition: 0.2s;
+}
+.btn-payslip:hover { background: var(--brand-yellow); color: #000; }
+
+/* =========================================
+   ESTILO NEO-BRUTALISTA - NOVO VENDEDOR
+   ========================================= */
+
+/* Fundo em grade escuro */
+body.dark-grid-bg {
+    background-color: #111;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    color: #fff;
+}
+
+.system-container { max-width: 1300px; margin: 40px auto; padding: 0 20px; }
+
+/* Card de Turno (Topo) */
+.user-turn-card {
+    background: #111; border: 2px solid var(--brand-red); position: relative;
+    padding: 20px 30px; display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 30px; font-family: var(--font-mono); box-shadow: 6px 6px 0 #000;
+}
+.turn-label { 
+    position: absolute; top: -12px; left: -2px; background: var(--brand-red); 
+    color: #fff; font-size: 0.7rem; padding: 3px 10px; font-weight: 900; 
+}
+.user-info-wrapper { display: flex; align-items: center; gap: 20px; }
+.user-avatar { font-size: 2.5rem; background: #fff; border: 2px solid #000; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; }
+.user-details h2 { margin: 0 0 5px 0; font-size: 1.4rem; color: #fff; }
+.user-details p { margin: 0; font-size: 0.85rem; color: #aaa; }
+.badge-red { background: var(--brand-red); color: #fff; padding: 2px 6px; font-weight: bold; }
+
+.turn-actions { display: flex; align-items: center; gap: 20px; }
+.turn-status { display: flex; flex-direction: column; align-items: flex-end; font-size: 0.8rem; color: #aaa; }
+.turn-status strong { color: #4caf50; font-size: 1rem; display: flex; align-items: center; gap: 5px; }
+.dot-green { width: 10px; height: 10px; background: #4caf50; border-radius: 50%; display: inline-block; }
+.btn-end-turn { background: var(--brand-red); color: #fff; border: 2px solid var(--brand-red); padding: 10px 20px; text-decoration: none; font-weight: 900; transition: 0.2s;}
+
+/* Efeito ao passar o mouse */
+.btn-end-turn:hover {
+    background: #000;
+    border-color: #000;
+}
+
+/* Grid Principal (Menu + Conteúdo) */
+.system-grid { 
+    display: grid; grid-template-columns: 250px 1fr; gap: 30px; margin-top: 30px;
+}
+/* Sidebar Menu */
+.sidebar-title { 
+    background: var(--brand-yellow); color: #000; padding: 15px; 
+    font-weight: 900; border: 3px solid #000; font-family: 'JetBrains Mono', monospace; 
+}
+.sidebar-menu { list-style: none; padding: 0; margin: 0; }
+.sidebar-menu li { 
+    background: #fff; color: #000; padding: 15px; border: 3px solid #000; 
+    border-top: none; font-weight: bold; cursor: pointer; transition: 0.2s; 
+}
+.sidebar-menu li:hover { background: #f0f0f0; }
+.sidebar-menu li.active { background: #f0f0f0; border-left: 8px solid var(--brand-yellow); }
+
+/* Conteúdo e Abas */
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* Caixas (Neo-boxes) */
+.neo-box { background: #fff; border: 4px solid #000; padding: 25px; box-shadow: 6px 6px 0 #000; color: #000; }
+.progress-bar-light { background: #fff; border: 3px solid #000; height: 35px; width: 100%; margin-top: 15px; position: relative;overflow: hidden; }
+.progress-fill-green { background: #00fa9a; height: 100%; border-right: 3px solid #000; display: flex; align-items: center; padding-left: 10px; font-weight: 900; font-family: 'JetBrains Mono', monospace;font-size: 0.9rem;transition: width 0.5s ease-in-out;}
+.box-yellow { background: var(--brand-yellow); color: #000; }
+.box-dark { background: #1a1a1a; color: #fff; border-color: #000; box-shadow: 6px 6px 0 #000; }
+.box-white { background: #fff; color: #000; }
+.box-red { background: var(--brand-red); color: #fff; }
+.box-white-outline { background: #fff; color: #000; border: 4px solid #000; }
+
+.quick-stats-row { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
+.quick-stats-row h3 { font-size: 2rem; margin: 5px 0; font-family: var(--font-mono); }
+
+/* Barras de Progresso */
+.progress-bar-dark { background: #000; height: 15px; width: 100%; margin-top: 10px; border: 2px solid #000; }
+.progress-fill-dark { background: #fff; height: 100%; }
+
+.progress-bar-light { background: #fff; border: 3px solid #000; height: 35px; width: 100%; margin-top: 15px; }
+.progress-fill-green { background: #00fa9a; height: 100%; border-right: 3px solid #000; display: flex; align-items: center; padding-left: 10px; font-weight: bold; font-family: var(--font-mono); }
+
+/* Formulário Inline */
+.box-title { font-size: 1.3rem; font-weight: 900; margin-bottom: 5px; text-transform: uppercase; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+.box-subtitle { font-size: 0.8rem; color: #666; margin-bottom: 20px; font-family: var(--font-mono); }
+.inline-form { display: grid; grid-template-columns: 2fr 1fr auto; gap: 15px; align-items: end; }
+.input-group label { display: block; font-size: 0.75rem; font-weight: 900; margin-bottom: 5px; }
+.input-group input { width: 100%; padding: 12px; border: 3px solid #000; font-family: var(--font-mono); }
+.btn-black { background: #000; color: #fff; padding: 15px 25px; border: 3px solid #000; font-weight: 900; cursor: pointer; transition: 0.2s; }
+.btn-black:hover { background: var(--brand-red); color: #fff; }
+
+/* Lista de Vendas */
+.sales-list-container { margin-top: 30px; }
+.list-title { display: flex; align-items: center; gap: 10px; font-weight: 900; color: #fff; margin-bottom: 15px; }
+.list-title span { width: 4px; height: 20px; background: var(--brand-red); display: inline-block; }
+
+.sale-item { 
+    background: #fff; color: #000; border: 3px solid #000; padding: 15px; 
+    margin-bottom: 15px; display: flex; align-items: center; gap: 20px; position: relative; box-shadow: 4px 4px 0 #000;
+}
+.tag-pago { position: absolute; top: -10px; left: 10px; background: #00fa9a; color: #000; border: 2px solid #000; font-size: 0.7rem; font-weight: 900; padding: 2px 8px; }
+.sale-icon { font-size: 2rem; background: #f0f0f0; border: 2px solid #000; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; }
+.sale-details { flex-grow: 1; display: flex; flex-direction: column; }
+.sale-details strong { font-size: 1.1rem; font-weight: 900; }
+.sale-details span { font-size: 0.8rem; color: #666; font-family: var(--font-mono); margin-top: 5px; }
+.sale-values { text-align: right; display: flex; flex-direction: column; }
+.sale-values strong { font-size: 1.2rem; font-weight: 900; }
+.commission-text { color: #4caf50; font-size: 0.8rem; font-weight: bold; }
+
+/* Card Gigante (Aba Metas) */
+.giant-card { padding: 40px; margin-bottom: 20px; }
+.giant-values { display: flex; align-items: baseline; gap: 10px; margin-top: 10px; }
+.giant-values h1 { font-size: 4rem; margin: 0; font-family: var(--font-mono); }
+.giant-values span { font-size: 1.5rem; color: #555; font-family: var(--font-mono); }
+
+.three-cards-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.three-cards-row h3 { font-size: 2rem; margin: 10px 0; font-family: var(--font-mono); }
+
+/* =========================================
+   ESTILO NEO-BRUTALISTA - NOVO GERENTE
+   ========================================= */
+
+/* Cores e Botões Root */
+.badge-purple { background: #9c27b0; color: #fff; padding: 2px 6px; font-weight: bold; }
+.sidebar-title-purple { background: #9c27b0; color: #fff; border-bottom: 3px solid #000; }
+.sidebar-menu-purple li.active { border-left: 8px solid #9c27b0; }
+.btn-root { background: #111; color: #fff; border-color: #333; }
+.btn-root:hover { background: #333; }
+
+/* Status da Equipe (Chips) */
+.team-stats { display: flex; gap: 15px; margin: 20px 0; flex-wrap: wrap; }
+.stat-chip { padding: 10px 15px; border: 3px solid #000; font-weight: 900; font-family: var(--font-mono); font-size: 0.85rem; }
+.bg-black-chip { background: #000; color: #fff; box-shadow: 4px 4px 0 var(--brand-red); border-color: var(--brand-red); }
+.bg-green-chip { background: #00fa9a; color: #000; box-shadow: 4px 4px 0 #000; }
+.bg-yellow-chip { background: var(--brand-yellow); color: #000; box-shadow: 4px 4px 0 #000; }
+
+/* Grid de Membros da Equipe */
+.team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; }
+.team-card { border: 4px solid #000; padding: 20px; position: relative; background: #fff; box-shadow: 6px 6px 0 #000; }
+.team-card h3 { margin: 0 0 5px 0; font-size: 1.2rem; }
+/* Ajuste das Tags flutuantes do Gerente */
+.team-card-badge { position: absolute; top: 15px; right: 15px; border: 3px solid #000; padding: 4px 10px; font-weight: 900; font-size: 0.75rem; font-family: var(--font-mono); }
+.team-card-badge.bg-green { background: #00fa9a; color: #000; }
+.team-card-badge.bg-yellow { background: var(--brand-yellow); color: #000; }.team-details { margin-top: 15px; font-size: 0.85rem; line-height: 1.6; }
+.team-details p { margin: 0; }
+
+/* Formulários, Inputs e Textarea */
+.neo-input { width: 100%; border: 3px solid #000; padding: 12px; font-family: var(--font-mono); font-size: 1rem; }
+.tactical-form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.full-width { grid-column: span 2; }
+textarea.neo-input { min-height: 120px; resize: vertical; }
+.btn-full-black { width: 100%; background: #000; color: #fff; padding: 18px; font-weight: 900; border: 3px solid #000; cursor: pointer; transition: 0.2s; font-size: 1.1rem; }
+.btn-full-black:hover { background: var(--brand-red); }
+
+/* Tabela de Progresso de Metas */
+.goals-table-container { margin-top: 40px; }
+.goals-header { display: grid; grid-template-columns: 2fr 2fr 1fr; font-weight: 900; font-family: var(--font-mono); border-bottom: 4px solid #000; padding-bottom: 10px; margin-bottom: 15px; font-size: 0.85rem; }
+.goal-row { display: grid; grid-template-columns: 2fr 2fr 1fr; align-items: center; padding: 15px 0; border-bottom: 2px dashed #ccc; }
+.goal-row:last-child { border-bottom: none; }
+.btn-outline { background: #fff; border: 3px solid #000; padding: 8px 15px; font-weight: 900; cursor: pointer; transition: 0.2s; box-shadow: 3px 3px 0 #000; }
+.btn-outline:active { box-shadow: 0 0 0 #000; transform: translate(3px, 3px); }
+
+/* =========================================
+   ESTILO NEO-BRUTALISTA - NOVO RH
+   ========================================= */
+
+/* Cores e Botões RH */
+.badge-green-rh { background: #00c853; color: #fff; padding: 2px 6px; font-weight: bold; }
+.sidebar-title-green { background: #00c853; color: #fff; border-bottom: 3px solid #000; }
+.sidebar-menu-green li.active { border-left: 8px solid #00c853; }
+
+/* Estilização do Holerite (Payslip) */
+.payslip-preview { border: 4px solid #000; padding: 30px; background: #fff; box-shadow: inset 0 0 0 2px #000; margin-top: 20px; font-family: var(--font-mono); }
+.payslip-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+.payslip-header h3 { margin: 0 0 5px 0; font-size: 1.2rem; }
+.payslip-month { border: 2px solid #000; padding: 5px 15px; font-weight: bold; font-size: 0.9rem; }
+.dashed-hr { border: none; border-top: 2px dashed #000; margin: 20px 0; }
+
+.payslip-employee-info { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 40px; font-size: 0.9rem; margin-bottom: 20px; }
+.payslip-employee-info div { display: flex; gap: 10px; }
+
+.payslip-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 20px; }
+.payslip-table th { background: #000; color: #fff; padding: 10px; text-align: left; border: 2px solid #000; }
+.payslip-table td { padding: 10px; border: 2px solid #000; font-weight: bold; }
+.val-green { color: #00c853; }
+.val-red { color: var(--brand-red); }
+
+.payslip-footer { display: flex; flex-direction: column; align-items: flex-end; }
+.payslip-totals { display: flex; gap: 30px; text-align: right; }
+.payslip-totals div { display: flex; flex-direction: column; }
+.payslip-totals span { font-size: 0.75rem; color: #555; text-transform: uppercase; margin-bottom: 5px; }
+.payslip-totals strong { font-size: 1.2rem; }
+.net-total strong { font-size: 1.4rem; }
+
+/* Tabela CRUD (Gestão de Pessoal) */
+.crud-table-container { border: 4px solid #000; }
+.crud-header { display: grid; grid-template-columns: 2fr 1.5fr 1fr 1.5fr; background: #000; color: #fff; font-weight: 900; padding: 15px; font-family: var(--font-mono); font-size: 0.85rem; }
+.crud-row { display: grid; grid-template-columns: 2fr 1.5fr 1fr 1.5fr; align-items: center; padding: 15px; border-bottom: 2px solid #000; font-family: var(--font-mono); font-size: 0.9rem; }
+.crud-row:last-child { border-bottom: none; }
+.status-tag-active { background: #00fa9a; border: 2px solid #000; padding: 4px 10px; font-weight: bold; font-size: 0.75rem; }
+.status-tag-inactive { background: #e0e0e0; border: 2px solid #000; padding: 4px 10px; font-weight: bold; font-size: 0.75rem; color: #555; }
+.crud-actions { display: flex; gap: 10px; }
+.btn-outline-red { color: var(--brand-red); border-color: var(--brand-red); }
+.btn-outline-green { color: #00c853; border-color: #00c853; }
+
+/* =========================================
+   ESTILO NEO-BRUTALISTA - NOVO ESTOQUISTA
+   ========================================= */
+
+/* Elementos do Cabeçalho e Ponto */
+.dot-yellow { width: 10px; height: 10px; background: var(--brand-yellow); border-radius: 50%; display: inline-block; }
+.btn-green-action { 
+    background: #00fa9a; color: #000; padding: 12px 25px; font-weight: 900; font-size: 0.9rem;
+    border: 3px solid #000; cursor: pointer; font-family: var(--font-mono); box-shadow: 4px 4px 0 #000; transition: 0.1s;
+}
+.btn-green-action:active { transform: translate(4px, 4px); box-shadow: 0 0 0 #000; }
+
+/* Cabeçalho da Lista de Tarefas */
+.task-header-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
+.task-counter { background: #000; color: #fff; padding: 6px 15px; font-weight: 900; font-family: var(--font-mono); font-size: 0.9rem; border: 2px solid #000; }
+.heavy-hr { border: none; border-top: 4px solid #000; margin-bottom: 40px; }
+
+/* Cards de Tarefas */
+.task-card { position: relative; border: 4px solid #000; box-shadow: 6px 6px 0 #000; padding: 25px; margin-bottom: 35px; background: #fff; transition: opacity 0.3s; }
+.task-priority { position: absolute; top: -14px; right: 20px; color: #fff; font-weight: 900; padding: 4px 15px; font-size: 0.8rem; border: 3px solid #000; font-family: var(--font-mono); }
+.badge-high { background: var(--brand-red); }
+.badge-med { background: var(--brand-yellow); color: #000; }
+
+.task-content-layout { display: flex; gap: 20px; align-items: flex-start; }
+
+/* Checkbox Brutalista */
+.task-checkbox-wrapper { padding-top: 5px; }
+.brutalist-checkbox { 
+    width: 28px; height: 28px; border: 3px solid #000; background: #fff; 
+    cursor: pointer; appearance: none; -webkit-appearance: none; 
+    display: flex; justify-content: center; align-items: center; transition: 0.2s;
+}
+.brutalist-checkbox:checked { background: #000; }
+.brutalist-checkbox:checked::after { content: '✔'; color: #fff; font-size: 18px; font-weight: bold; font-family: sans-serif; }
+
+/* Textos e Rodapé da Tarefa */
+.task-details h3 { margin: 0 0 10px 0; font-size: 1.2rem; text-transform: uppercase; transition: color 0.3s; }
+.task-details p { margin: 0; color: #555; font-size: 0.9rem; line-height: 1.5; transition: color 0.3s; }
+.dotted-hr { border: none; border-top: 2px dotted #aaa; margin: 15px 0; }
+.task-footer { display: flex; gap: 30px; font-size: 0.8rem; color: #444; font-weight: bold; font-family: var(--font-mono); }
+
+/* Ajuste Responsivo Básico para Tarefas */
+@media (max-width: 768px) {
+    .task-header-row { flex-direction: column; align-items: flex-start; gap: 15px; }
+    .task-footer { flex-direction: column; gap: 10px; }
+}
+
+/* =========================================
+   ESTILO DO LOGO (HEADER INTERNO)
+   ========================================= */
+.logo { 
+    display: flex; 
+    align-items: center; 
+    gap: 15px; 
+}
+
+.logo-icon {
+    background: #ff4d4d; 
+    color: var(--brand-yellow);
+    border: 3px solid #000;
+    box-shadow: 3px 3px 0 #000;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.logo-text h1 { 
+    margin: 0; 
+    font-size: 1.6rem; 
+    font-weight: 900; 
+    line-height: 1.1; 
+}
+
+.logo-text span { 
+    font-size: 0.75rem; 
+    color: #666; 
+    font-family: var(--font-mono); 
+    letter-spacing: 1px; 
+    text-transform: uppercase;
+}
+
+/* =========================================
+   AJUSTES DO PAINEL DE ACESSIBILIDADE
+   ========================================= */
+.acc-section { margin-bottom: 20px; }
+.acc-section h4 { font-size: 0.85rem; margin-bottom: 10px; font-weight: 900; text-transform: uppercase; }
+.acc-buttons-row { display: flex; gap: 10px; }
+.acc-buttons-row button { flex: 1; padding: 8px; border: 2px solid #000; background: #fff; font-weight: bold; cursor: pointer; transition: 0.2s; }
+.acc-buttons-row button:hover { background: var(--brand-yellow); }
+
+/* =========================================
+   BOTÃO INTERATIVO DE STATUS (TOGGLE)
+   ========================================= */
+.btn-status {
+    background: transparent;
+    border: none;
+    color: #4caf50; 
+    font-size: 1rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    padding: 0;
+    font-family: var(--font-mono);
+    transition: 0.2s;
+}
+
+/* Efeito ao passar o mouse */
+.btn-status:hover {
+    opacity: 0.7;
+}
+
+/* Classe aplicada via JavaScript quando estiver Ausente */
+.btn-status.ausente {
+    color: var(--brand-yellow);
+}
+
+/* =========================================
+   CORREÇÃO DE BORDAS VAZANDO (BOX MODEL)
+   ========================================= */
+.neo-input, 
+.input-group input, 
+.input-group select, 
+.input-group textarea {
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+/* =========================================
+   MODAL NEO-BRUTALISTA (CADASTRAR FUNCIONÁRIO)
+   ========================================= */
+.modal-overlay {
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85); 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    z-index: 2000; 
+}
+
+/* Oculta o modal quando a classe hidden está presente */
+.modal-overlay.hidden { display: none !important; }
+
+.modal-box {
+    background: #fff; 
+    width: 100%; 
+    max-width: 600px;
+    border: 4px solid #000; 
+    box-shadow: 12px 12px 0 #000;
+    padding: 40px; 
+    position: relative;
+    margin: 20px;
+}
+
+.btn-close-modal {
+    position: absolute; 
+    top: -20px; 
+    right: -20px;
+    background: var(--brand-red); 
+    color: #fff;
+    border: 4px solid #000; 
+    width: 50px; 
+    height: 50px;
+    font-size: 1.5rem; 
+    font-weight: 900; 
+    cursor: pointer;
+    box-shadow: 4px 4px 0 #000; 
+    transition: 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-close-modal:active {
+    transform: translate(4px, 4px); 
+    box-shadow: 0 0 0 #000;
+}
+
+/* =========================================
+   ESTILO NEO-BRUTALISTA PARA INPUT DE ARQUIVO
+   ========================================= */
+input[type="file"].neo-input {
+    padding: 6px; 
+    cursor: pointer;
+    background: #fff;
+    color: #555; 
+}
+
+/* Foca apenas no botão "Escolher arquivo" de dentro do input */
+input[type="file"]::file-selector-button {
+    background: #000;
+    color: #fff;
+    border: 2px solid #000;
+    padding: 8px 15px;
+    font-weight: 900;
+    font-family: var(--font-mono);
+    cursor: pointer;
+    margin-right: 15px;
+    transition: 0.2s;
+    text-transform: uppercase;
+}
+
+/* Efeito ao passar o mouse */
+input[type="file"]::file-selector-button:hover {
+    background: var(--brand-yellow);
+    color: #000;
+}
+
+/* =========================================
+   NOVA TELA DE LOGIN NEO-BRUTALISTA
+   ========================================= */
+.login-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 80px); /* Desconta o tamanho do header */
+    padding: 20px;
+}
+
+.neo-login-container {
+    width: 100%;
+    max-width: 900px;
+    border: 4px solid #000;
+    box-shadow: 12px 12px 0 #000;
+    background: #fff;
+    margin-bottom: 20px;
+}
+
+.login-banner {
+    background: var(--brand-red);
+    color: #fff;
+    padding: 25px 40px;
+    border-bottom: 4px solid #000;
+}
+
+.login-banner .small-caps {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.login-banner h2 {
+    font-size: 2.2rem;
+    font-weight: 900;
+    margin: 5px 0;
+    letter-spacing: -1px;
+}
+
+.login-banner p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.login-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.login-info-side {
+    background: #111;
+    color: #fff;
+    padding: 40px;
+    border-right: 4px solid #000;
+}
+
+.login-info-side h3 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin: 25px 0 15px 0;
+}
+
+.login-info-side p {
+    color: #aaa;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.login-form-side {
+    padding: 40px;
+    background: #fff;
+}
+
+.btn-login-neo {
+    background: var(--brand-red);
+    color: #fff;
+    border: 4px solid #000;
+    padding: 15px;
+    font-weight: 900;
+    font-size: 1.1rem;
+    width: 100%;
+    cursor: pointer;
+    box-shadow: 6px 6px 0 #000;
+    transition: 0.1s;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.btn-login-neo:active {
+    transform: translate(6px, 6px);
+    box-shadow: 0 0 0 #000;
+}
+
+.login-footer-text {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: #666;
+    text-align: center;
+    max-width: 800px;
+}
+
+/* Responsividade para telas menores (celulares) */
+@media (max-width: 768px) {
+    .login-split {
+        grid-template-columns: 1fr;
+    }
+    .login-info-side {
+        border-right: none;
+        border-bottom: 4px solid #000;
+    }
+}
+
+/* Estilização dos Badges de Prioridade */
+.badge-alta {
+    background-color: #ff3e3e;
+    color: white;
+    padding: 2px 8px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    border: 2px solid #000;
+}
+
+.badge-media {
+    background-color: #ffbd3e;
+    color: black;
+    padding: 2px 8px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    border: 2px solid #000;
+}
+
+.badge-baixa {
+    background-color: #3e8bff;
+    color: white;
+    padding: 2px 8px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    border: 2px solid #000;
+}
+
+/* Ajuste fino dos cards */
+.task-card {
+    border: 2px solid #000;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.task-info {
+    flex-grow: 1;
+}
+
+input[type="checkbox"] {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    border: 2px solid #000;
+}
+
+/* Estilo para o Badge do RH */
+.badge-green {
+    background-color: #00fa9a; 
+    color: #000; 
+    padding: 2px 8px;
+    font-size: 0.7rem;
+    font-weight: 900;
+    border: 2px solid #000;
+    text-transform: uppercase;
+}
+
+/* ==========================================
+   MODAIS (JANELAS FLUTUANTES) E BOTÕES CRUD
+   ========================================== */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85); display: flex; justify-content: center; align-items: center;
+    z-index: 9999;
+}
+.modal-overlay.hidden { display: none; }
+
+.modal-content {
+    background: #fff; 
+    color: #000; 
+    border: 4px solid #000; 
+    padding: 30px; 
+    width: 90%; 
+    max-width: 500px;
+    box-shadow: 10px 10px 0 var(--brand-yellow);
+}
+
+.btn-acao {
+    padding: 6px 12px; font-weight: 900; cursor: pointer; border: 2px solid #000; 
+    background: #fff; text-transform: uppercase; font-size: 0.75rem; margin-right: 5px;
+    box-shadow: 2px 2px 0 #000;
+}
+.btn-acao:active { transform: translate(2px, 2px); box-shadow: 0 0 0 #000; }
+
+.btn-desligar { background-color: #ffcccc; color: #cc0000; }
+.btn-reativar { background-color: #ccffcc; color: #008000; }
+
+/* ==========================================
+   TRENDVIBES - CUSTOM NEO-BRUTALIST CSS (INDEX)
+   ========================================== */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #050505; }
+::-webkit-scrollbar-thumb { background: #CC0000; border: 2px solid #000000; }
+::-webkit-scrollbar-thumb:hover { background: #ffffff; }
+.brutal-border { border: 3px solid #000000; }
+.brutal-border-sm { border: 2px solid #000000; }
+.brutal-shadow { box-shadow: 4px 4px 0px 0px #000000; }
+.brutal-shadow-red { box-shadow: 4px 4px 0px 0px #CC0000; }
+.brutal-shadow-lg { box-shadow: 8px 8px 0px 0px #000000; }
+.grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+.hover-lift { transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.hover-lift:hover { transform: translate(-4px, -4px); box-shadow: 8px 8px 0px 0px #000000; }

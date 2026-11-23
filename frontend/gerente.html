@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Root (Gerência) | TrendVibes</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body class="dark-grid-bg">
+
+    <header class="main-header">
+        <div class="logo">
+            <div class="logo-icon">⚡</div>
+            <div class="logo-text"><h1>TRENDVIBES</h1><span>STREETWEAR SYSTEM</span></div>
+        </div>
+        <div class="header-info"><h1>PAINEL DO GERENTE</h1></div>
+    </header>
+
+    <main class="system-container">
+        <div class="user-turn-card">
+            <span class="turn-label">SISTEMA DE TURNO OPERACIONAL</span>
+            <div class="user-info-wrapper">
+                <div class="user-avatar">👤</div>
+                <div class="user-details">
+                    <h2 id="perfilNome">CARREGANDO...</h2>
+<p>Cargo Ativo: <span id="perfilCargo" class="badge-purple">CARGO</span> • E-mail: <span id="perfilEmail">email@trendvibes.com</span></p>                </div>
+            </div>
+            
+            <div class="turn-actions">
+                <div class="turn-status">
+                    <span>ESTADO DO TURNO</span>
+                    <button id="status-toggle" class="btn-status" onclick="toggleTurnStatus()">
+                        <span class="status-dot dot-green"></span> 
+                        <span id="status-text">TURNO ATIVO</span>
+                    </button>
+                </div>
+                <a href="login.html" class="btn-end-turn">ENCERRAR TURNO</a>
+            </div>
+        </div>
+
+        <div class="system-grid">
+            <aside class="system-sidebar">
+                <div class="sidebar-title sidebar-title-purple">PAINEL DE GESTÃO</div>
+                <ul class="sidebar-menu sidebar-menu-purple">
+                    <li class="menu-item active" onclick="switchTab('vendas', this)">💰 Lançar Venda</li>
+                    <li class="menu-item" onclick="switchTab('equipe', this)">👥 Status Interno</li>
+                    <li class="menu-item" onclick="switchTab('metas', this)">📈 Minhas Metas</li>
+                    <li class="menu-item" onclick="switchTab('atribuir', this)">🎯 Atribuição de Metas</li>
+                    <li class="menu-item" onclick="switchTab('tatica', this)">📋 Criar Nova Disposição Tática</li>
+                </ul>
+            </aside>
+
+            <section class="system-content">
+                <div id="tab-vendas" class="tab-pane active">
+                    <div class="quick-stats-row">
+                        <div class="neo-box box-yellow">
+                            <span>META DO MÊS (PROGRESSO)</span>
+                            <h3 id="textoMeta">R$ 0,00 / R$ 0,00</h3>
+                            <div class="progress-bar-dark">
+                                <div id="barraMeta" class="progress-fill-dark" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        <div class="neo-box box-dark">
+                            <span style="color: #aaa;">COMISSÃO ACUMULADA (5%)</span>
+                            <h3 id="textoComissao" style="color: #4caf50;">R$ 0,00</h3>
+                            <p style="font-size: 0.8rem; color: #777;">Atualizado após a última venda.</p>
+                        </div>
+                    </div>
+
+                    <div class="neo-box box-white" style="margin-top: 20px;">
+                        <h2 class="box-title">REGISTRO DE VENDAS DE BALCÃO</h2>
+                        <p class="box-subtitle">ADICIONE NOVAS VENDAS PARA CONTABILIZAR NA SUA META E COMISSÃO</p>
+                        
+                        <form id="form-venda" class="inline-form">
+                            <div class="input-group">
+                                <label>CÓDIGO DA PEÇA / SKU</label>
+                                <input type="text" id="skuVenda" placeholder="Ex: MOLETOM-CRIMSON-G" required>
+                            </div>
+                            <div class="input-group">
+                                <label>VALOR DA VENDA (R$)</label>
+                                <input type="text" id="valorVenda" placeholder="0,00" required>
+                            </div>
+                            <button type="button" class="btn-black" onclick="registrarNovaVenda()">REGISTRAR VENDA +</button>
+                        </form>
+                    </div>
+
+                    <div class="sales-list-container" style="margin-top: 30px;">
+                        <h3 style="color: white; margin-bottom: 20px;">🛒 ÚLTIMAS VENDAS HOJE</h3>
+                        <div id="listaHistoricoVendasGerente"></div>
+                    </div>
+                </div>
+
+                <div id="tab-equipe" class="tab-pane">
+                    <div class="neo-box box-white">
+                        <h2 class="box-title">STATUS INTERNO DA EQUIPE</h2>
+                        <p class="box-subtitle">MONITORAMENTO DETALHADO EM TEMPO REAL DO SISTEMA DE PONTO E TERMINAIS.</p>
+                        
+                        <div class="team-stats" id="statsEquipeCards"></div>
+
+                        <div class="team-grid" id="listaEquipeStatus"></div>
+                    </div>
+                </div>
+
+                <div id="tab-metas" class="tab-pane">
+                    <div class="neo-box box-white">
+                        <h2 class="box-title">PERFORMANCE DO MÊS - MAIO/2026</h2>
+                        <p class="box-subtitle">ACOMPANHAMENTO DE METAS E ESTATÍSTICAS DA GERÊNCIA</p>
+                        
+                        <div class="neo-box box-yellow giant-card">
+                            <span>META GLOBAL DO MÊS</span>
+                           <div class="giant-values">
+                                <h1 id="metaGiantValor">R$ 0,00</h1>
+                                <span id="metaGiantMeta">/ R$ 0,00</span>
+                            </div>
+                            <div class="progress-bar-light">
+                                <div id="metaGiantBarra" class="progress-fill-green" style="width: 0%;">0% ALCANÇADO</div>
+                            </div>
+                        </div>
+
+                        <div class="three-cards-row">
+                            <div class="neo-box box-dark">
+                                <span style="color: #aaa; font-size: 0.8rem;">BÔNUS ACUMULADO</span>
+                                <h3 id="metaComissao" style="color: #4caf50;">R$ 0,00</h3>
+                                <p style="font-size: 0.75rem; color: #777;">Base atual calculada</p>
+                            </div>
+                            <div class="neo-box box-red">
+                                <span style="color: #fff; font-size: 0.8rem;">FALTA PARA BATER A META</span>
+                                <h3 id="metaFaltaNivel" style="color: #fff;">R$ 0,00</h3>
+                                <p style="font-size: 0.75rem; color: #ffcccc;">Atingir o alvo financeiro</p>
+                            </div>
+                            <div class="neo-box box-white-outline">
+                                <span class="summary-label">TICKET MÉDIO</span>
+                                <h2 class="summary-value" id="valTicketMedio">R$ 0,00</h2>
+                                <p style="font-size: 0.75rem; color: #555;">Média de valor por venda</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-atribuir" class="tab-pane">
+                    <div class="neo-box box-white">
+                        <h2 class="box-title">METAS DOS VENDEDORES GERAL</h2>
+                        <p class="box-subtitle">ATRIBUA O ALVO FINANCEIRO E O BÔNUS PARA OS VENDEDORES.</p>
+                        
+                        <form id="form-atribuir-meta" class="tactical-form" style="margin-top: 30px;">
+                            <div class="input-group">
+                                <label>VENDEDOR</label>
+                                <select id="metaColaboradorId" class="neo-input" required>
+                                    <option value="">Carregando vendedores...</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label>ALVO FINANCEIRO GLOBAL (R$)</label>
+                                <input type="number" id="metaValor" placeholder="Ex: 25000" class="neo-input" required>
+                            </div>
+                            <div class="input-group">
+                                <label>% BÔNUS SOBRE FATURAMENTO</label>
+                                <input type="number" id="metaBonus" placeholder="Ex: 5.0" class="neo-input" step="0.1" required>
+                            </div>
+                            <div class="full-width">
+                                <button type="button" class="btn-full-black" onclick="salvarMetaEquipe()">SALVAR META</button>
+                            </div>
+                        </form>
+
+                        <div class="goals-table-container" style="margin-top: 40px;">
+                            <div class="list-title" style="display: flex; align-items: center; gap: 10px; font-weight: 900; color: #000; margin-bottom: 15px;">
+                                <span style="width: 4px; height: 20px; background: var(--brand-red); display: inline-block;"></span> 
+                                PAINEL DE PROGRESSO
+                            </div>
+                            
+                            <div class="goals-header" style="display: grid; grid-template-columns: 2fr 2fr 1fr; font-weight: 900; font-family: var(--font-mono); border-bottom: 4px solid #000; padding-bottom: 10px; margin-bottom: 15px; font-size: 0.85rem;">
+                                <div>VENDEDOR</div>
+                                <div>PROGRESSO ATUAL</div>
+                                <div style="text-align: right;">AÇÕES</div>
+                            </div>
+
+                            <div id="listaProgressoEquipe"></div>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-tatica" class="tab-pane">
+                    <div class="neo-box box-white">
+                        <h2 class="box-title">CRIAR NOVA DISPOSIÇÃO TÁTICA</h2>
+                        <p class="box-subtitle">AGENDAMENTO DE TAREFAS LOGÍSTICAS E OPERACIONAIS PARA A EQUIPE.</p>
+                        
+                        <form id="form-tarefa" class="tactical-form" style="margin-top: 30px;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div class="input-group">
+                                    <label>TÍTULO DA ATIVIDADE</label>
+                                    <input type="text" id="tarefaTitulo" class="neo-input" placeholder="Ex: Organizar Cabides Central" required>
+                                </div>
+                                <div class="input-group">
+                                    <label>RESPONSÁVEL</label>
+                                    <select id="tarefaResponsavel" class="neo-input">
+                                        <option value="Estoque">Equipe de Estoque</option>
+                                        <option value="Vendas">Equipe de Vendas</option>
+                                        <option value="Geral">Geral (Todos)</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>PRIORIDADE</label>
+                                    <select id="tarefaPrioridade" class="neo-input">
+                                        <option value="ALTA">Alta prioridade</option>
+                                        <option value="MEDIA">Média prioridade</option>
+                                        <option value="BAIXA">Baixa prioridade</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>DATA / PRAZO DE ENTREGA</label>
+                                    <input type="date" id="tarefaData" class="neo-input" required>
+                                </div>
+                            </div>
+                            
+                            <div class="input-group full-width" style="margin-top: 20px;">
+                                <label>DIRETRIZES DETALHADAS</label>
+                                <textarea id="tarefaDescricao" class="neo-input" rows="4" placeholder="Insira o roteiro da tarefa..."></textarea>
+                            </div>
+                            
+                            <div class="full-width" style="margin-top: 20px;">
+                                <button type="button" class="btn-full-black" onclick="criarNovaTarefa()">AGENDAR TAREFA NO TERMINAL</button>
+                            </div>
+                        </form>
+
+                        <div style="margin-top: 50px; border-top: 4px solid #000; padding-top: 20px;">
+                            <h3 style="color: #000; font-weight: 900; margin-bottom: 20px;">👁️ ACOMPANHAMENTO EM TEMPO REAL (HOJE)</h3>
+                            <div id="listaAcompanhamentoTarefas">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+    </main>
+
+     <!-- Acessibilidade -->
+<button id="accessibility-btn" class="btn-accessibility" aria-label="Abrir painel de acessibilidade">
+        <span class="acc-icon">ॐ</span> ACESSIBILIDADE
+    </button>
+    
+    <div id="accessibility-panel" class="accessibility-drawer hidden">
+        <div class="acc-header">
+            <h3>ॐ FERRAMENTAS ACESSÍVEIS</h3>
+            <button id="close-accessibility" class="close-btn">X</button>
+        </div>
+        <div class="acc-content">
+            <div class="acc-section">
+                <h4>TAMANHO DOS TEXTOS</h4>
+                <div class="acc-buttons-row">
+                    <button id="font-decrease">A-</button>
+                    <button id="font-reset">NORMAL</button>
+                    <button id="font-increase">A+</button>
+                </div>
+            </div>
+            <div class="acc-section">
+                <h4>MODO DE VISUALIZAÇÃO</h4>
+                <button id="toggle-contrast" class="acc-btn-full">👁️ ATIVAR ALTO CONTRASTE</button>
+            </div>
+            <div class="acc-section">
+                <h4>FONTE ACESSÍVEL (DISLEXIA)</h4>
+                <button id="toggle-dyslexia" class="acc-btn-full">📄 FONTE PARA DISLEXIA</button>
+            </div>
+            <div class="acc-section">
+                <h4>LEITOR DE TELA (TTS)</h4>
+                <button id="toggle-tts" class="acc-btn-full">🔊 ATIVAR NARRADOR</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="acessibilidade.js"></script>
+    
+    <script>
+        // ==========================================
+        // DADOS DO USUÁRIO E TURNO
+        // ==========================================
+       function carregarDadosUsuario() {
+            const usuarioSalvo = localStorage.getItem('usuarioLogado');
+            if (!usuarioSalvo) return;
+            
+            const dadosUsuario = JSON.parse(usuarioSalvo);
+            
+            document.getElementById('perfilNome').innerText = dadosUsuario.nome.toUpperCase();
+            document.getElementById('perfilCargo').innerText = dadosUsuario.cargo.toUpperCase();
+            
+            const emailSeguro = dadosUsuario.email ? dadosUsuario.email : "email-pendente@trendvibes.com";
+            document.getElementById('perfilEmail').innerText = emailSeguro.toLowerCase();
+
+            const btn = document.getElementById('status-toggle');
+            const dot = btn.querySelector('.status-dot');
+            const text = document.getElementById('status-text');
+
+            if (dadosUsuario.turnoStatus === 'AUSENTE') {
+                btn.classList.add('ausente');
+                dot.className = 'status-dot dot-yellow';
+                text.innerText = 'AUSENTE';
+            } else {
+                btn.classList.remove('ausente');
+                dot.className = 'status-dot dot-green';
+                text.innerText = 'TURNO ATIVO';
+            }
+        }
+
+       // ==========================================
+        // ALTERNÂNCIA DE STATUS DO TURNO (COM MEMÓRIA)
+        // ==========================================
+        async function toggleTurnStatus() {
+            const btn = document.getElementById('status-toggle');
+            const dot = btn.querySelector('.status-dot');
+            const text = document.getElementById('status-text');
+            
+            const user = JSON.parse(localStorage.getItem('usuarioLogado'));
+            if (!user) return;
+
+            const isAtivo = !btn.classList.contains('ausente');
+            const novoStatus = isAtivo ? 'AUSENTE' : 'ATIVO'; 
+
+            try {
+                // 1. Atualiza no Banco de Dados (C#)
+                await fetch('http://localhost:5208/api/turno', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ colaboradorId: user.colaboradorId, status: novoStatus })
+                });
+
+                // 2. Muda a cor e o texto no ecrã
+                if (novoStatus === 'ATIVO') {
+                    btn.classList.remove('ausente');
+                    dot.className = 'status-dot dot-green';
+                    text.innerText = 'TURNO ATIVO';
+                } else {
+                    btn.classList.add('ausente');
+                    dot.className = 'status-dot dot-yellow';
+                    text.innerText = 'AUSENTE';
+                }
+
+                // 3. AQUI ESTÁ A CORREÇÃO: Guarda na memória do navegador para resistir ao F5!
+                user.turnoStatus = novoStatus;
+                localStorage.setItem('usuarioLogado', JSON.stringify(user));
+
+                // Se for o painel do Gerente, atualiza a lista de colaboradores na hora
+                if (typeof carregarListaEquipe === "function") {
+                    carregarListaEquipe();
+                }
+                
+            } catch (erro) { 
+                console.error("Erro ao mudar turno:", erro); 
+            }
+        }
+        // ==========================================
+        // PAINEL DE STATUS INTERNO DA EQUIPE (GERENTE)
+        // ==========================================
+        async function carregarListaEquipe() {
+            try {
+                const res = await fetch('http://localhost:5208/api/equipe/status');
+                const equipe = await res.json();
+                
+                const statsContainer = document.getElementById('statsEquipeCards');
+                const gridContainer = document.getElementById('listaEquipeStatus');
+                if(!statsContainer || !gridContainer) return;
+                
+                let total = equipe.length;
+                let ativos = equipe.filter(e => e.turnoStatus === 'ATIVO').length;
+                let ausentes = total - ativos;
+
+                statsContainer.innerHTML = `
+                    <div class="stat-chip bg-black-chip">TOTAL: ${total} COLABORADORES</div>
+                    <div class="stat-chip bg-green-chip">🟢 ${ativos} ATIVOS NO TURNO</div>
+                    <div class="stat-chip bg-yellow-chip">🟡 ${ausentes} AUSENTES / OFFLINE</div>
+                `;
+
+                gridContainer.innerHTML = equipe.map(colab => {
+                    const isAtivo = colab.turnoStatus === 'ATIVO';
+                    const badgeClass = isAtivo ? 'bg-green' : 'bg-yellow';
+                    const badgeText = isAtivo ? '🟢 ATIVO' : '🟡 AUSENTE';
+                    
+                    return `
+                        <div class="team-card">
+                            <div class="team-card-badge ${badgeClass}">${badgeText}</div>
+                            <h3 style="margin-top: 0; font-size: 1.1rem; text-transform: uppercase;">${colab.nome}</h3>
+                            <span style="color: var(--brand-red); font-weight: 900; font-size: 0.8rem; text-transform: uppercase;">${colab.cargo}</span>
+                            
+                            <div class="team-details" style="margin-top: 15px;">
+                                <p><strong>Entrada no Sistema:</strong> ${colab.horaEntrada === '--:--' ? '--:--' : 'Hoje, ' + colab.horaEntrada}</p>
+                                <p><strong>Saída do Sistema:</strong> ${colab.horaSaida === '--:--' ? '--:--' : 'Hoje, ' + colab.horaSaida}</p>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (e) { console.error("Erro ao carregar equipe:", e); }
+        }
+
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+            document.getElementById('tab-' + tabId).classList.add('active');
+        }
+
+        // ==========================================
+        // VENDAS (REGISTRAR E CARREGAR)
+        // ==========================================
+        async function registrarNovaVenda() {
+            const skuDigitado = document.getElementById('skuVenda').value;
+            let valorDigitado = document.getElementById('valorVenda').value;
+
+            if (!skuDigitado || !valorDigitado) {
+                alert("Preencha o código da peça e o valor!");
+                return;
+            }
+
+            valorDigitado = parseFloat(valorDigitado.replace(',', '.'));
+            const usuarioSalvo = localStorage.getItem('usuarioLogado');
+            if (!usuarioSalvo) return;
+            const dadosUsuario = JSON.parse(usuarioSalvo);
+
+            try {
+                const resposta = await fetch('http://localhost:5208/api/vendas', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        colaboradorId: dadosUsuario.colaboradorId, 
+                        sku: skuDigitado.toUpperCase(),
+                        valor: valorDigitado
+                    })
+                });
+
+                const dados = await resposta.json();
+                if (resposta.ok && dados.sucesso) {
+                    alert(`Venda Registrada! Comissão: R$ ${dados.comissao.toFixed(2)}`);
+                    document.getElementById('skuVenda').value = '';
+                    document.getElementById('valorVenda').value = '';
+                    carregarHistoricoVendas(); 
+                    carregarResumoMetas(); 
+                } else {
+                    alert("Erro: " + dados.mensagem);
+                }
+            } catch (erro) { console.error(erro); }
+        }
+
+        async function carregarHistoricoVendas() {
+            const usuarioSalvo = localStorage.getItem('usuarioLogado');
+            if (!usuarioSalvo) return;
+            const dadosUsuario = JSON.parse(usuarioSalvo);
+
+            try {
+                const resposta = await fetch(`http://localhost:5208/api/vendas/${dadosUsuario.colaboradorId}`);
+                const historico = await resposta.json();
+
+                const container = document.getElementById('listaHistoricoVendasGerente');
+                if(!container) return;
+                
+                container.innerHTML = historico.length === 0 ? '<p style="color: gray;">Nenhuma venda registrada hoje.</p>' : ''; 
+
+                historico.forEach(venda => {
+                    const card = document.createElement('div');
+                    card.className = "neo-box";
+                    card.style.display = "flex";
+                    card.style.justifyContent = "space-between";
+                    card.style.alignItems = "center";
+                    card.style.marginBottom = "15px";
+                    card.style.padding = "15px";
+
+                    card.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="font-size: 1.5rem;">🛒</div>
+                            <div>
+                                <h4 style="margin: 0; color: #000;">${venda.sku}</h4>
+                                <small style="color: #666;">⏱ ${venda.hora} • Registro de Caixa</small>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <h3 style="margin: 0; color: #000;">R$ ${venda.valor.toFixed(2).replace('.', ',')}</h3>
+                            <small style="color: #4caf50; font-weight: bold;">+ R$ ${venda.comissao.toFixed(2).replace('.', ',')} (Comissão)</small>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (erro) { console.error("Erro ao carregar histórico:", erro); }
+        }
+
+        // ==========================================
+        // METAS (ATUALIZADA COM O PAINEL GIGANTE)
+        // ==========================================
+        async function carregarResumoMetas() {
+            const user = JSON.parse(localStorage.getItem('usuarioLogado'));
+            if (!user) return;
+            
+            try {
+                // A API puxa a meta definida pelo RH e as vendas gerais
+                const res = await fetch(`http://localhost:5208/api/vendas/resumo/${user.colaboradorId}`);
+                const data = await res.json();
+                
+                if (data.sucesso) {
+                    const format = (val) => val.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+                    const meta = parseFloat(data.metaMensal);
+                    const vendido = parseFloat(data.totalVendas);
+                    let progresso = (vendido / meta) * 100;
+                    if (progresso > 100) progresso = 100;
+                    
+                    document.getElementById('textoMeta').innerHTML = `R$ ${format(vendido)} <small>/ R$ ${format(meta)}</small>`;
+                    document.getElementById('textoComissao').innerText = `R$ ${format(data.totalComissao)}`;
+                    document.getElementById('barraMeta').style.width = Math.min(progresso, 100) + "%";
+
+                    if(document.getElementById('metaGiantValor')) {
+                        document.getElementById('metaGiantValor').innerText = `R$ ${format(vendido)}`;
+                        document.getElementById('metaGiantMeta').innerText = `/ R$ ${format(meta)}`;
+                        
+                        const barraGiant = document.getElementById('metaGiantBarra');
+                        barraGiant.style.width = `${Math.min(progresso, 100)}%`;
+                        barraGiant.innerText = `${progresso.toFixed(1).replace('.', ',')}% ALCANÇADO`;
+                        barraGiant.style.color = '#000'; 
+                        
+                        document.getElementById('metaComissao').innerText = `R$ ${format(data.totalComissao)}`;
+                        
+                        const faltaParaMeta = Math.max(0, meta - vendido);
+                        document.getElementById('metaFaltaNivel').innerText = `R$ ${format(faltaParaMeta)}`;
+                    }
+                }
+            } catch (erro) { console.error("Erro ao atualizar metas:", erro); }
+        }
+
+        // ==========================================
+        // GESTÃO DE METAS DA EQUIPE (GERENTE)
+        // ==========================================
+        async function salvarMetaEquipe() {
+            const dados = {
+                colaboradorId: parseInt(document.getElementById('metaColaboradorId').value),
+                valorMeta: parseFloat(document.getElementById('metaValor').value),
+                bonusPercentual: parseFloat(document.getElementById('metaBonus').value),
+                mesReferencia: "05/2026"
+            };
+
+            if(!dados.colaboradorId || isNaN(dados.valorMeta) || isNaN(dados.bonusPercentual)){
+                alert("Preencha todos os campos do formulário corretamente.");
+                return;
+            }
+
+            const res = await fetch('http://localhost:5208/api/metas', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dados)
+            });
+
+            if (res.ok) {
+                alert("Meta do Vendedor atualizada com sucesso!");
+                document.getElementById('form-atribuir-meta').reset();
+                carregarProgressoEquipe(); 
+            } else {
+                alert("Erro ao salvar a meta.");
+            }
+        }
+
+        async function carregarProgressoEquipe() {
+            try {
+                const res = await fetch('http://localhost:5208/api/vendas/equipe/resumo');
+                const equipe = await res.json();
+                const container = document.getElementById('listaProgressoEquipe');
+                if(!container) return;
+                
+                container.innerHTML = '';
+                const format = (val) => val.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+
+                if(equipe.length === 0) {
+                    container.innerHTML = '<p style="color: gray; font-family: var(--font-mono);">Nenhum vendedor ativo encontrado.</p>';
+                    return;
+                }
+
+                equipe.forEach(vendedor => {
+                    let progresso = (vendedor.totalVendas / vendedor.metaMensal) * 100;
+                    if (progresso > 100) progresso = 100;
+                    
+                    let corBarra = progresso >= 70 ? '#00fa9a' : 'var(--brand-yellow)';
+
+                    const row = document.createElement('div');
+                    row.style.cssText = "display: grid; grid-template-columns: 2fr 2fr 1fr; align-items: center; padding: 15px 0; border-bottom: 2px dashed #ccc;";
+                    
+                    row.innerHTML = `
+                        <div>
+                            <strong>${vendedor.nome.toUpperCase()} (ID: ${vendedor.colaboradorId})</strong><br>
+                            <span style="font-size: 0.8rem; color: #666;">Alvo: R$ ${format(vendedor.metaMensal)} • Bônus: ${vendedor.bonusPercentual}%</span>
+                        </div>
+                        <div style="padding-right: 20px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; margin-bottom: 5px;">
+                                <span>R$ ${format(vendedor.totalVendas)}</span>
+                                <span style="color: ${corBarra};">${progresso.toFixed(1).replace('.', ',')}%</span>
+                            </div>
+                            <div class="progress-bar-dark" style="height: 10px; margin:0; width: 100%; background: #000; border: 2px solid #000;">
+                                <div class="progress-fill-dark" style="background: ${corBarra}; width: ${progresso}%; height: 100%;"></div>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <button class="btn-outline" style="background: #fff; border: 3px solid #000; padding: 8px 15px; font-weight: 900; cursor: pointer; box-shadow: 3px 3px 0 #000;" 
+                            onclick="editarMetaEquipe(${vendedor.colaboradorId}, ${vendedor.metaMensal}, ${vendedor.bonusPercentual})">EDITAR</button>
+                        </div>
+                    `;
+                    container.appendChild(row);
+                });
+            } catch(e) { console.error("Erro ao carregar equipe:", e); }
+        }
+
+        function editarMetaEquipe(id, metaAtual, bonusAtual) {
+            document.getElementById('metaColaboradorId').value = id;
+            document.getElementById('metaValor').value = metaAtual;
+            document.getElementById('metaBonus').value = bonusAtual;
+            
+            document.getElementById('metaValor').focus();
+            window.scrollTo({ top: document.getElementById('tab-atribuir').offsetTop, behavior: 'smooth' });
+        }
+
+        // ==========================================
+        // CARREGAR VENDEDORES NO MENU SUSPENSO
+        // ==========================================
+        async function carregarVendedoresDropdown() {
+            try {
+                const res = await fetch('http://localhost:5208/api/colaboradores/simples');
+                const colaboradores = await res.json();
+                
+                const selectVendedor = document.getElementById('metaColaboradorId');
+                if(!selectVendedor) return;
+
+                let options = '<option value="">-- Selecione um Vendedor --</option>';
+                
+                colaboradores.forEach(c => {
+                    if(c.cargo === 'Vendedor') {
+                        options += `<option value="${c.id}">${c.nome}</option>`;
+                    }
+                });
+                
+                selectVendedor.innerHTML = options;
+            } catch (err) { console.error("Erro ao carregar vendedores:", err); }
+        }
+
+        // ==========================================
+        // CRIAR NOVA TAREFA TÁTICA
+        // ==========================================
+        async function criarNovaTarefa() {
+            const titulo = document.getElementById('tarefaTitulo').value;
+            const descricao = document.getElementById('tarefaDescricao').value;
+            const prioridade = document.getElementById('tarefaPrioridade').value;
+            const dataTarefa = document.getElementById('tarefaData').value;
+
+            if (!titulo || !dataTarefa) {
+                alert("Erro: Preencha o Título e a Data/Prazo de Entrega!");
+                return;
+            }
+
+            try {
+                const res = await fetch('http://localhost:5208/api/tarefas', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        titulo: titulo,
+                        descricao: descricao,
+                        prioridade: prioridade,
+                        dataTarefa: dataTarefa
+                    })
+                });
+
+                if (res.ok) {
+                    alert("Tarefa agendada e enviada para o Estoque com sucesso!");
+                    document.getElementById('form-tarefa').reset();
+                    carregarAcompanhamentoTarefas(); 
+                } else {
+                    alert("Erro ao agendar a tarefa.");
+                }
+            } catch (erro) {
+                console.error("Erro na requisição:", erro);
+                alert("Falha na comunicação com o servidor.");
+            }
+        }
+
+        // ==========================================
+        // ACOMPANHAMENTO DE TAREFAS (GERENTE)
+        // ==========================================
+        async function carregarAcompanhamentoTarefas() {
+            try {
+                const res = await fetch('http://localhost:5208/api/tarefas');
+                const tarefas = await res.json();
+                const container = document.getElementById('listaAcompanhamentoTarefas');
+                if(!container) return;
+
+                container.innerHTML = '';
+                if(tarefas.length === 0) {
+                    container.innerHTML = '<p style="color: gray; font-family: var(--font-mono);">Nenhuma tarefa agendada para hoje.</p>';
+                    return;
+                }
+
+                tarefas.forEach(t => {
+                    const isConcluida = t.status;
+                    const statusHtml = isConcluida 
+                        ? `<span style="color: #4caf50; font-weight: bold;">✔ CONCLUÍDO por ${t.concluidoPorNome.toUpperCase()} às ${t.horaConclusao}</span>` 
+                        : `<span style="color: var(--brand-yellow); font-weight: bold; background: #000; padding: 3px 8px; border-radius: 3px;">⏳ PENDENTE</span>`;
+
+                    container.innerHTML += `
+                        <div style="background: #f9f9f9; border-left: 5px solid ${isConcluida ? '#4caf50' : '#000'}; padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong style="font-size: 1.1rem; color: #000;">${t.titulo}</strong>
+                                <span class="badge-${t.prioridade.toLowerCase()}" style="margin-left: 10px; font-size: 0.7rem;">${t.prioridade}</span>
+                            </div>
+                            <div style="font-size: 0.85rem;">
+                                ${statusHtml}
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch(e) { console.error("Erro ao carregar acompanhamento:", e); }
+        }
+
+        // ==========================================
+        // CÁLCULO DE TICKET MÉDIO
+        // ==========================================
+        async function carregarTicketMedio() {
+            const user = JSON.parse(localStorage.getItem('usuarioLogado'));
+            if (!user) return;
+
+            try {
+                const res = await fetch(`http://localhost:5208/api/ticket/${user.colaboradorId}`);
+                const dados = await res.json();
+                
+                if (dados.sucesso) {
+                    const formatar = (valor) => valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                    const el = document.getElementById('valTicketMedio');
+                    if (el) el.innerText = formatar(dados.ticket);
+                }
+            } catch (err) {
+                console.error("Erro ao carregar Ticket Médio:", err);
+            }
+        }
+        
+  // ==========================================
+        // INICIALIZAÇÃO DA PÁGINA
+        // ==========================================
+        window.onload = () => {
+            carregarDadosUsuario();
+            carregarResumoMetas();
+            carregarHistoricoVendas();
+            carregarProgressoEquipe();
+            carregarListaEquipe();
+            carregarAcompanhamentoTarefas();
+            carregarVendedoresDropdown();
+            carregarTicketMedio();
+        };
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Estoquista | TrendVibes</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body class="dark-grid-bg">
+
+    <!-- Header Global -->
+    <header class="main-header">
+        <div class="logo">
+            <div class="logo-icon">⚡</div>
+            <div class="logo-text">
+                <h1>TRENDVIBES</h1>
+                <span>STREETWEAR SYSTEM</span>
+            </div>
+        </div>
+        <div class="header-info"><h1>PAINEL DO ESTOQUISTA</h1></div>
+    </header>
+
+    <main class="system-container" style="max-width: 1000px;">
+    
+    <div class="user-turn-card">
+        <span class="turn-label">SISTEMA DE TURNO OPERACIONAL</span>
+        
+        <div class="user-info-wrapper">
+            <div class="user-avatar">👤</div>
+            <div class="user-details">
+                <h2 id="perfilNome">NOME DO USUÁRIO</h2>
+                <p>Cargo Ativo: <span id="perfilCargo" class="badge-red">CARGO</span> • E-mail: <span id="perfilEmail">email@trendvibes.com</span></p>
+            </div>
+        </div>
+        
+        <div class="turn-actions">
+            <div class="turn-status">
+                <span>ESTADO DO TURNO</span>
+                <button id="status-toggle" class="btn-status" onclick="toggleTurnStatus()">
+                    <span class="status-dot dot-green"></span> 
+                    <span id="status-text">TURNO ATIVO</span>
+                </button>
+            </div>
+            <a href="login.html" class="btn-end-turn">ENCERRAR TURNO</a>
+        </div>
+    </div>
+
+    <div class="neo-box box-white" style="padding: 40px;">
+        <div class="task-header-row">
+            <div>
+                <h2 class="box-title" style="border: none; margin: 0; padding: 0; font-size: 1.5rem;">LISTA DE TAREFAS DE HOJE</h2>
+                <p class="box-subtitle" style="margin: 5px 0 0 0;">OPERAÇÕES LOGÍSTICAS PULLING DO BANCO DE DADOS</p>
+            </div>
+            <div class="task-counter">COMPLETA: <span id="contador-tarefas">0/0</span></div>
+        </div>
+        
+        <hr class="heavy-hr">
+
+        <div id="lista-tarefas">
+            <p style="text-align: center; color: #777; padding: 20px;">Carregando tarefas do servidor...</p>
+        </div>
+        
+    </div>
+</main>
+
+    <!-- Acessibilidade -->
+    <button id="accessibility-btn" class="btn-accessibility" aria-label="Abrir painel de acessibilidade">
+        <span class="acc-icon">ॐ</span> ACESSIBILIDADE
+    </button>
+    
+    <div id="accessibility-panel" class="accessibility-drawer hidden">
+        <div class="acc-header">
+            <h3>ॐ FERRAMENTAS ACESSÍVEIS</h3>
+            <button id="close-accessibility" class="close-btn">X</button>
+        </div>
+        <div class="acc-content">
+            
+            <div class="acc-section">
+                <h4>TAMANHO DOS TEXTOS</h4>
+                <div class="acc-buttons-row">
+                    <button id="font-decrease">A-</button>
+                    <button id="font-reset">NORMAL</button>
+                    <button id="font-increase">A+</button>
+                </div>
+            </div>
+
+            <div class="acc-section">
+                <h4>MODO DE VISUALIZAÇÃO</h4>
+                <button id="toggle-contrast" class="acc-btn-full">👁️ ATIVAR ALTO CONTRASTE</button>
+            </div>
+
+            <div class="acc-section">
+                <h4>FONTE ACESSÍVEL (DISLEXIA)</h4>
+                <button id="toggle-dyslexia" class="acc-btn-full">📄 FONTE PARA DISLEXIA</button>
+            </div>
+
+            <div class="acc-section">
+                <h4>LEITOR DE TELA (TTS)</h4>
+                <button id="toggle-tts" class="acc-btn-full">🔊 ATIVAR NARRADOR</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="acessibilidade.js"></script>
+  <script>
+    // ==========================================
+    // FUNÇÃO PARA CARREGAR OS DADOS DO USUÁRIO LOGADO
+    // ==========================================
+    function carregarDadosUsuario() {
+            const usuarioSalvo = localStorage.getItem('usuarioLogado');
+            if (!usuarioSalvo) return;
+            
+            const dadosUsuario = JSON.parse(usuarioSalvo);
+            
+            document.getElementById('perfilNome').innerText = dadosUsuario.nome.toUpperCase();
+            document.getElementById('perfilCargo').innerText = dadosUsuario.cargo.toUpperCase();
+            
+            const emailSeguro = dadosUsuario.email ? dadosUsuario.email : "email-pendente@trendvibes.com";
+            document.getElementById('perfilEmail').innerText = emailSeguro.toLowerCase();
+
+            const btn = document.getElementById('status-toggle');
+            const dot = btn.querySelector('.status-dot');
+            const text = document.getElementById('status-text');
+
+            if (dadosUsuario.turnoStatus === 'AUSENTE') {
+                btn.classList.add('ausente');
+                dot.className = 'status-dot dot-yellow';
+                text.innerText = 'AUSENTE';
+            } else {
+                btn.classList.remove('ausente');
+                dot.className = 'status-dot dot-green';
+                text.innerText = 'TURNO ATIVO';
+            }
+        }
+
+    // ==========================================
+    // BUSCAR TAREFAS DO BANCO
+    // ==========================================
+    async function carregarTarefas() {
+        try {
+            const resposta = await fetch('http://localhost:5208/api/tarefas');
+            const tarefas = await resposta.json();
+            
+            const container = document.getElementById('lista-tarefas');
+            container.innerHTML = ''; 
+
+            let total = tarefas.length;
+            let concluidas = 0;
+
+            tarefas.forEach(tarefa => {
+                if(tarefa.status) concluidas++; 
+
+                const card = document.createElement('div');
+                card.className = 'task-card';
+                if(tarefa.status) card.style.opacity = '0.7';
+
+                card.innerHTML = `
+                    <div class="task-info">
+                        <h3 style="${tarefa.status ? 'text-decoration: line-through; color: #888;' : ''}">
+                            ${tarefa.titulo} 
+                            <span class="badge-${tarefa.prioridade.toLowerCase()}">${tarefa.prioridade}</span>
+                        </h3>
+                        <p style="${tarefa.status ? 'color: #aaa;' : ''}">${tarefa.descricao}</p>
+                    </div>
+                    <input type="checkbox" ${tarefa.status ? 'checked' : ''} onchange="atualizarStatus(${tarefa.id}, this)">
+                `;
+                container.appendChild(card);
+            });
+
+                document.getElementById('contador-tarefas').innerText = `${concluidas}/${total}`;            
+        } catch (erro) {
+            console.error("Erro ao carregar tarefas:", erro);
+        }
+    }
+
+    // ==========================================
+    // ATUALIZAR STATUS COM NOME DO USUÁRIO
+    // ==========================================
+    async function atualizarStatus(id, checkbox) {
+        try {
+            
+            const usuarioSalvo = JSON.parse(localStorage.getItem('usuarioLogado'));
+            
+            await fetch(`http://localhost:5208/api/tarefas/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    status: checkbox.checked,
+                    nomeConcluinte: usuarioSalvo.nome 
+                })
+            });
+            carregarTarefas(); 
+        } catch (erro) {
+            console.error("Erro ao atualizar status:", erro);
+        }
+    }
+
+   // ==========================================
+        // ALTERNÂNCIA DE STATUS DO TURNO (COM MEMÓRIA)
+        // ==========================================
+        async function toggleTurnStatus() {
+            const btn = document.getElementById('status-toggle');
+            const dot = btn.querySelector('.status-dot');
+            const text = document.getElementById('status-text');
+            
+            const user = JSON.parse(localStorage.getItem('usuarioLogado'));
+            if (!user) return;
+
+            const isAtivo = !btn.classList.contains('ausente');
+            const novoStatus = isAtivo ? 'AUSENTE' : 'ATIVO'; 
+
+            try {
+                // 1. Atualiza no Banco de Dados (C#)
+                await fetch('http://localhost:5208/api/turno', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ colaboradorId: user.colaboradorId, status: novoStatus })
+                });
+
+                // 2. Muda a cor e o texto no ecrã
+                if (novoStatus === 'ATIVO') {
+                    btn.classList.remove('ausente');
+                    dot.className = 'status-dot dot-green';
+                    text.innerText = 'TURNO ATIVO';
+                } else {
+                    btn.classList.add('ausente');
+                    dot.className = 'status-dot dot-yellow';
+                    text.innerText = 'AUSENTE';
+                }
+
+                // 3. AQUI ESTÁ A CORREÇÃO: Guarda na memória do navegador para resistir ao F5!
+                user.turnoStatus = novoStatus;
+                localStorage.setItem('usuarioLogado', JSON.stringify(user));
+
+                // Se for o painel do Gerente, atualiza a lista de colaboradores na hora
+                if (typeof carregarListaEquipe === "function") {
+                    carregarListaEquipe();
+                }
+                
+            } catch (erro) { 
+                console.error("Erro ao mudar turno:", erro); 
+            }
+        }
+
+    // ==========================================
+    // INICIALIZAÇÃO ÚNICA
+    // ==========================================
+    window.onload = function() {
+        carregarDadosUsuario();
+        carregarTarefas();
+    };
+</script>
+</body>
+</html>

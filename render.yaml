@@ -1,0 +1,27 @@
+services:
+  # ==============================================================================
+  # 1. FRONTEND WEB (TrendVibes Streetwear Store & Staff Portal)
+  # Serviço Estático Gratuito (Static Site)
+  # ==============================================================================
+  - type: web
+    name: trendvibes-frontend
+    runtime: static
+    staticPublishPath: ./frontend
+    pullRequestPreviewsEnabled: false
+
+  # ==============================================================================
+  # 2. BACKEND API C# (.NET 8 com Dockerfile)
+  # Web Service Gratuito
+  # ==============================================================================
+  - type: web
+    name: trendvibes-api
+    runtime: docker
+    dockerfilePath: ./TrendVibes.Api/Dockerfile
+    dockerContext: ./TrendVibes.Api
+    plan: free
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      # A connection string do banco pode ser inserida diretamente no painel do Render:
+      - key: ConnectionStrings__TrendVibesDB
+        sync: false

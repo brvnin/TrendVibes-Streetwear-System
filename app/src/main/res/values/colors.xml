@@ -1,0 +1,7 @@
+<resources>
+    <color name="brand_red">#CC0000</color>
+    <color name="brand_black">#0A0A0A</color>
+    <color name="brand_white">#FFFFFF</color>
+    <color name="brand_yellow">#FACC15</color>
+    <color name="brand_gray">#262626</color>
+</resources>

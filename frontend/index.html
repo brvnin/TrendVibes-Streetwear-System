@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TrendVibes | Augusta Streetwear System</title>
+    
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;700;800&family=Space+Grotesk:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: { extend: { fontFamily: { sans: ['"Inter"', 'sans-serif'], mono: ['"JetBrains Mono"', 'monospace'], display: ['"Space Grotesk"', 'sans-serif'], }, colors: { 'brand-red': '#CC0000', } } }
+      }
+    </script>
+</head>
+
+<body class="bg-neutral-950 font-sans text-white relative min-h-screen flex flex-col justify-between overflow-x-hidden select-none">
+    
+    <!-- Textura de Fundo -->
+    <div class="fixed inset-0 grain opacity-5 pointer-events-none z-50"></div>
+
+    <!-- Faixa de Aviso Topo -->
+    <div class="bg-[#CC0000] border-b-4 border-black px-4 py-2.5 text-center text-[10px] font-mono uppercase tracking-widest font-black text-white flex items-center justify-center gap-2 relative z-50">
+        <span>🔥 COLEÇÃO 'BLOODLINE' DISPONÍVEL &bull; FRETE GRÁTIS EM COMPRAS ACIMA DE R$300 &bull; CUPOM AUTO-ATIVO: <strong class="bg-black text-white px-2 py-0.5 ml-1">TRENDVIBES10</strong> 🔥</span>
+    </div>
+
+    <!-- Header Principal -->
+    <header class="bg-white text-black border-b-4 border-black sticky top-0 z-40 brutal-shadow">
+        <nav class="max-w-7xl mx-auto px-4 md:px-8 py-5 flex flex-col md:flex-row items-center justify-between gap-4">
+            <a href="#" class="flex items-center gap-3 hover:opacity-90">
+                <div class="bg-[#CC0000] p-2 border-3 border-black text-white brutal-shadow-red flex items-center justify-center">
+                    <i data-lucide="zap" class="w-6 h-6 stroke-[3]"></i>
+                </div>
+                <div class="text-left">
+                    <span class="font-sans font-black text-3xl tracking-tighter text-black block leading-none uppercase">TRENDVIBES<span class="text-[#CC0000]">.</span></span>
+                    <span class="text-[10px] font-mono tracking-widest text-[#555] font-black block uppercase mt-0.5">STREETWEAR SYSTEM</span>
+                </div>
+            </a>
+            
+            <div class="flex items-center gap-3">
+               <button id="accessibility-btn" class="font-mono text-xs font-black uppercase border-3 border-black py-2.5 px-4 bg-white text-black hover:bg-[#CC0000] hover:text-white transition-all brutal-shadow">
+                    <i data-lucide="accessibility" class="w-4 h-4 inline mr-1.5 -mt-0.5"></i>Acessibilidade
+                </button>
+                
+                <a href="login.html" class="font-mono text-xs font-black uppercase border-3 border-black py-2.5 px-4 bg-zinc-200 text-black hover:bg-black hover:text-white transition-all brutal-shadow">
+                    <i data-lucide="key" class="w-4 h-4 inline mr-1.5 -mt-0.5"></i>Login Staff
+                </a>
+                
+                <button id="cart-trigger" class="relative bg-[#CC0000] border-3 border-black p-2.5 text-white brutal-shadow cursor-pointer hover:bg-black transition-all" onclick="document.getElementById('cart-drawer').classList.remove('translate-x-full'); document.getElementById('cart-overlay').classList.remove('hidden');">
+                    <i data-lucide="shopping-cart" class="w-5 h-5 stroke-[2.5]"></i>
+                    <span id="cart-counter" class="absolute -top-1.5 -right-1.5 bg-yellow-400 text-black border-2 border-black text-[9px] font-black w-5 h-5 flex items-center justify-center hidden">0</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-1">
+        <section class="block animate-fade-in">
+            <!-- HERO BANNER SANGUE FRIO -->
+            <div class="relative bg-neutral-900 overflow-hidden py-16 md:py-28 border-b-4 border-black flex items-center justify-center text-center">
+                <div class="absolute inset-0 bg-cover bg-center brightness-30 contrast-125 opacity-30 pointer-events-none" style="background-image: url('https://images.unsplash.com/photo-1509281373149-e957c6296406?q=80&w=1200');"></div>
+                <div class="max-w-4xl mx-auto px-4 relative z-10">
+                    <div class="inline-block bg-[#CC0000] text-white font-mono text-xs font-black tracking-widest uppercase py-1 px-3 mb-4 brutal-shadow-lg transform -rotate-1">
+                        FALL / WINTER DROP CATALOG - 2026
+                    </div>
+                    <h1 class="font-display font-black text-6xl md:text-8xl uppercase tracking-tighter leading-none mb-6 text-white text-stroke">
+                        TREND<span class="text-[#CC0000] filter drop-shadow-[0_2px_10px_rgba(204,0,0,0.5)]">VIBES</span> <br />
+                        <span class="bg-white text-black px-4 py-1.5 inline-block border-4 border-black transform rotate-1 brutal-shadow text-5xl md:text-7xl">SANGUE-FRIO</span>
+                    </h1>
+                    <p class="font-mono text-xs md:text-sm text-gray-300 max-w-lg mx-auto mb-8 font-semibold tracking-wide">
+                        Estruturados pesados de alta micragem, cortes boxy despojados e a solidez do algodão penteado de vanguarda urbana brasileira.
+                    </p>
+                </div>
+            </div>
+
+            <!-- VITRINE DE PRODUTOS -->
+            <div class="max-w-7xl mx-auto px-4 md:px-8 py-12">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-10 pb-6 border-b border-neutral-900">
+                    <div class="text-left">
+                        <h2 class="font-display font-black text-2xl md:text-4xl uppercase tracking-tighter text-white">PEÇAS EXCLUSIVAS DO DROP</h2>
+                        <p class="text-xs text-zinc-500 font-mono uppercase mt-0.5">Tiragem Limitada &bull; Costura Reforçada</p>
+                    </div>
+                </div>
+                <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t-4 border-black bg-black py-8 text-center text-xs font-mono text-zinc-500 uppercase tracking-widest relative z-40 mt-12">
+        <p class="mb-2 text-white font-bold">TrendVibes Augusta Inc. &copy; 2026</p>
+        <p>Desenvolvido para as ruas. Forjado no concreto.</p>
+    </footer>
+
+    <!-- GAVETA DO CARRINHO LATERAL -->
+    <div id="cart-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-xs z-50 hidden transition-opacity" onclick="closeCart()"></div>
+    <div id="cart-drawer" class="fixed top-0 right-0 bottom-0 w-full max-w-md bg-white text-black border-l-4 border-black z-50 transform translate-x-full transition-transform duration-300 flex flex-col justify-between">
+        <div class="p-5 border-b-4 border-black flex items-center justify-between text-black">
+            <div class="text-left">
+                <h3 class="font-display font-black text-xl uppercase tracking-tighter">SACOLA DE COMPRAS</h3>
+            </div>
+            <button onclick="closeCart()" class="bg-black text-white p-2 border-2 border-black brutal-shadow hover:bg-[#CC0000] cursor-pointer transition-all">
+                <i data-lucide="x" class="w-4 h-4 font-black"></i>
+            </button>
+        </div>
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4"></div>
+        <div class="p-5 border-t-3 border-black bg-zinc-50">
+            <div class="flex justify-between text-sm pt-2">
+                <span class="font-extrabold uppercase font-sans">VALOR FINAL</span>
+                <span id="cart-total" class="font-display font-black text-base text-[#CC0000]">R$ 0,00</span>
+            </div>
+            <button onclick="alert('Funcionalidade de Pix em desenvolvimento!')" class="w-full mt-4 bg-[#CC0000] hover:bg-black text-white font-mono font-black text-sm uppercase py-3.5 border-3 border-black brutal-shadow cursor-pointer transition-all">
+                FECHAR PEDIDO NO PIX
+            </button>
+        </div>
+    </div>
+
+    <!-- PAINEL ACESSIBILIDADE LATERAL -->
+   <div id="accessibility-panel" class="accessibility-drawer hidden">
+        <div class="acc-header">
+            <h3>ॐ FERRAMENTAS ACESSÍVEIS</h3>
+            <button id="close-accessibility" class="close-btn">X</button>
+        </div>
+        <div class="acc-content">
+            <div class="acc-section">
+                <h4>TAMANHO DOS TEXTOS</h4>
+                <div class="acc-buttons-row">
+                    <button id="font-decrease">A-</button>
+                    <button id="font-reset">NORMAL</button>
+                    <button id="font-increase">A+</button>
+                </div>
+            </div>
+            <div class="acc-section">
+                <h4>MODO DE VISUALIZAÇÃO</h4>
+                <button id="toggle-contrast" class="acc-btn-full">👁️ ATIVAR ALTO CONTRASTE</button>
+            </div>
+            <div class="acc-section">
+                <h4>FONTE ACESSÍVEL (DISLEXIA)</h4>
+                <button id="toggle-dyslexia" class="acc-btn-full">📄 FONTE PARA DISLEXIA</button>
+            </div>
+            <div class="acc-section">
+                <h4>LEITOR DE TELA (TTS)</h4>
+                <button id="toggle-tts" class="acc-btn-full">🔊 ATIVAR NARRADOR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT GESTOR DOS PRODUTOS E CARRINHO -->
+    <script>
+        lucide.createIcons();
+        
+        // Base de Produtos
+        const products = [
+            { id: 'p1', name: 'MOLETOM CRIMSON REBEL', price: 349.90, category: 'MOLETONS', img: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=800', isNew: true },
+            { id: 'p2', name: 'CORTA-VENTO TECH-RED', price: 389.00, category: 'JAQUETAS', img: 'https://images.unsplash.com/photo-1548883354-7622d03aca27?q=80&w=800', isNew: false },
+            { id: 'p3', name: 'CAMISETA INFERNO OVERSIZE', price: 159.90, category: 'CAMISETAS', img: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=800', isNew: true },
+            { id: 'p4', name: 'CALÇA CARGO CRIMSON', price: 299.90, category: 'CALÇAS', img: 'https://images.unsplash.com/photo-1517423568366-8b83523034fd?q=80&w=800', isNew: false }
+        ];
+
+        let cart = [];
+
+        function renderProducts() {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = products.map(p => `
+                <div class="bg-white text-black border-4 border-black p-4 brutal-shadow hover:translate-x-1 hover:translate-y-1 transition-all flex flex-col justify-between relative group">
+                    ${p.isNew ? '<span class="absolute top-2 left-2 z-10 bg-yellow-400 text-black border-2 border-black text-[9px] font-black px-2 py-0.5 uppercase tracking-wider transform -rotate-2">NEW DROP 🔥</span>' : ''}
+                    <div class="relative w-full aspect-square bg-zinc-100 border-3 border-black overflow-hidden mb-4">
+                        <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                    </div>
+                    <div class="text-left flex-1 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[9px] font-mono text-[#CC0000] uppercase font-extrabold tracking-wider bg-red-100 px-2 py-0.5 border border-black/40">${p.category}</span>
+                            <h3 class="font-display font-black text-lg uppercase tracking-tight mt-2 leading-tight">${p.name}</h3>
+                        </div>
+                        <div class="mt-4 pt-3 border-t-2 border-black flex items-center justify-between">
+                            <div>
+                                <span class="text-[9px] font-mono text-zinc-500 uppercase leading-none block">PREÇO</span>
+                                <span class="font-display font-black text-lg text-black">R$ ${p.price.toFixed(2)}</span>
+                            </div>
+                            <button onclick="addToCart('${p.id}')" class="bg-[#CC0000] hover:bg-black text-white font-mono font-black text-xs uppercase px-3 py-1.5 border-2 border-black brutal-shadow cursor-pointer transition-all">COMPRAR</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(id) {
+            const prod = products.find(p => p.id === id);
+            cart.push(prod);
+            updateCart();
+            document.getElementById('cart-drawer').classList.remove('translate-x-full');
+            document.getElementById('cart-overlay').classList.remove('hidden');
+        }
+
+        function closeCart() {
+            document.getElementById('cart-drawer').classList.add('translate-x-full');
+            document.getElementById('cart-overlay').classList.add('hidden');
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function updateCart() {
+            const container = document.getElementById('cart-items-container');
+            const counter = document.getElementById('cart-counter');
+            
+            counter.innerText = cart.length;
+            counter.classList.toggle('hidden', cart.length === 0);
+            
+            if (cart.length === 0) {
+                container.innerHTML = '<p class="text-zinc-500 font-mono text-xs text-center mt-10">Sua sacola está vazia.</p>';
+                document.getElementById('cart-total').innerText = 'R$ 0,00';
+                return;
+            }
+
+            let total = 0;
+            container.innerHTML = cart.map((item, index) => {
+                total += item.price;
+                return `
+                    <div class="bg-white border-3 border-black p-3 text-black brutal-shadow flex gap-3 relative mb-4">
+                        <img src="${item.img}" class="w-16 h-16 object-cover border-2 border-black" />
+                        <div class="flex-1 text-left flex flex-col justify-center">
+                            <h4 class="font-display font-black text-sm uppercase leading-tight line-clamp-1">${item.name}</h4>
+                            <span class="font-display font-black text-sm text-black mt-2">R$ ${item.price.toFixed(2)}</span>
+                        </div>
+                        <button onclick="removeFromCart(${index})" class="absolute top-3 right-3 text-zinc-400 hover:text-[#CC0000]"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('cart-total').innerText = 'R$ ' + total.toFixed(2);
+            lucide.createIcons();
+        }
+
+        // ==========================================
+        // LÓGICA DE ACESSIBILIDADE
+        // ==========================================
+        
+        // Abrir e fechar o painel
+        document.getElementById('accessibility-btn').addEventListener('click', () => {
+            document.getElementById('accessibility-panel').classList.remove('hidden');
+        });
+
+        document.getElementById('close-accessibility').addEventListener('click', () => {
+            document.getElementById('accessibility-panel').classList.add('hidden');
+        });
+
+        // Alternar Alto Contraste
+        document.getElementById('toggle-contrast').addEventListener('click', () => {
+            document.body.classList.toggle('high-contrast-mode');
+        });
+
+        // Alternar Fonte para Dislexia
+        document.getElementById('toggle-dyslexia').addEventListener('click', () => {
+            document.body.classList.toggle('dyslexia-mode');
+        });
+
+        // Controle de Tamanho da Fonte
+        let currentScale = 100;
+        document.getElementById('font-increase').addEventListener('click', () => {
+            if(currentScale < 150) {
+                currentScale += 10;
+                document.documentElement.style.fontSize = currentScale + '%';
+            }
+        });
+
+        document.getElementById('font-decrease').addEventListener('click', () => {
+            if(currentScale > 70) {
+                currentScale -= 10;
+                document.documentElement.style.fontSize = currentScale + '%';
+            }
+        });
+
+        document.getElementById('font-reset').addEventListener('click', () => {
+            currentScale = 100;
+            document.documentElement.style.fontSize = '100%';
+        });
+
+        // Leitor de Tela (Narrador / TTS)
+        let ttsActive = false;
+        document.getElementById('toggle-tts').addEventListener('click', (e) => {
+            ttsActive = !ttsActive;
+            if(ttsActive) {
+                e.target.innerHTML = "🔊 DESATIVAR NARRADOR";
+                e.target.style.background = "#000";
+                e.target.style.color = "#fff";
+                let utterance = new SpeechSynthesisUtterance("Narrador ativado.");
+                utterance.lang = 'pt-BR';
+                window.speechSynthesis.speak(utterance);
+            } else {
+                e.target.innerHTML = "🔊 ATIVAR NARRADOR";
+                e.target.style.background = "";
+                e.target.style.color = "";
+                window.speechSynthesis.cancel();
+            }
+        });
+
+        // Faz o Narrador ler os textos ao passar o mouse por cima
+        document.body.addEventListener('mouseover', (e) => {
+            if(!ttsActive) return;
+            const target = e.target.closest('button, a, label, h2, h3, p, span, input, select');
+            if (target && !target.dataset.spoken) {
+                window.speechSynthesis.cancel();
+                let text = target.innerText || target.placeholder || target.value || target.ariaLabel;
+                if(text) {
+                    let utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'pt-BR';
+                    window.speechSynthesis.speak(utterance);
+                    target.dataset.spoken = "true";
+                    setTimeout(() => target.removeAttribute('data-spoken'), 2000); 
+                }
+            }
+        });
+
+        window.onload = () => {
+            renderProducts();
+            updateCart();
+        };
+    </script>
+</body>
+</html>
